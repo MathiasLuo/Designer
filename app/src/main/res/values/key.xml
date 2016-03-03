@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="Client_ID">2dec79b4e57fe474cfb292619097b8080a1db2009175adcbc414bf7a0c0c8948</string>
+    <string name="Client_Secret">63c505bc443e2eccf7a8473df6560d1b50dcc80144b53be4359427db01ff0171</string>
+    <string name="Client_Access_Token">Bearer fb05456fe8ded2120d2062907be7ea2a80afd6959b8302d962ea8d1ffe58c82a</string>
+</resources>
