@@ -9,4 +9,7 @@ public interface IShotsActivity<T> {
 
     void showShots(List<T> list);
 
+    void showProgress();
+
+    void closeProgress();
 }

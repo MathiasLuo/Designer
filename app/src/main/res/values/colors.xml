@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#0027ff</color>
+    <color name="colorPrimaryDark">#0322d6</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+
+
+
+    <color name="decortint">#f7f7f7</color>
+    <color name="shot_icon_color">#a4a4a4</color>
+
+
+
+    <color name="theme_pink">#ea4c89</color>
+    <color name="theme_Charcoal">#333333</color>
+    <color name="theme_Link_Blue">#3a8bbb</color>
+    <color name="theme_pro">#66cccc</color>
+    <color name="theme_job">#7bbb5e</color>
+    <color name="theme_team">#00b6e3</color>
+    <color name="theme_Playbook">#66cc99</color>
+    <color name="theme_Slate">#9da3a5</color>
+
 </resources>

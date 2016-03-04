@@ -24,6 +24,12 @@ public class ShotModelImpl implements ShotModel {
     private Realm mRealm;
     private static ShotModelImpl instance;
 
+    private final static int PAGE = 1;
+    private final static int PER_PAGE = 10;
+
+    private int page = 1;
+    private int perPage = 10;
+
     public final static ShotModelImpl getInstance() {
         if (instance == null) {
             synchronized (ShotModelImpl.class) {
@@ -60,6 +66,17 @@ public class ShotModelImpl implements ShotModel {
         intentService.putExtra("perPage", per_page);
         APP.getInstance().startService(intentService);
 
+    }
+
+    @Override
+    public void startUpdata() {
+        startUpdata(page, perPage);
+        page++;
+    }
+
+    @Override
+    public void requestNewContent() {
+        startUpdata(PAGE, PER_PAGE);
     }
 
 

@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 public class Shot extends RealmObject {
@@ -78,9 +79,10 @@ public class Shot extends RealmObject {
     @SerializedName("user")
     @Expose
     private User user;
+
     @SerializedName("team")
     @Expose
-    private Team team;
+    private Team team = new Team();
 
     /**
      * 

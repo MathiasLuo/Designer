@@ -1,6 +1,10 @@
 package com.mathiasluo.designer.app;
 
 import android.app.Application;
+import android.support.v4.view.LayoutInflaterCompat;
+
+import com.mikepenz.iconics.Iconics;
+import com.mikepenz.iconics.context.IconicsLayoutInflater;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;

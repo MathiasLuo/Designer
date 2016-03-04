@@ -11,7 +11,7 @@ public class Links_  extends RealmObject {
     @SerializedName("web")
     @Expose
     @PrimaryKey
-    private String web;
+    private String web="www.MathiasLuo.com";
     @SerializedName("twitter")
     @Expose
     private String twitter;

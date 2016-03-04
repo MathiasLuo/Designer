@@ -6,4 +6,10 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+
+    <style name="MyProgress" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:color">#00b6e3</item>
+    </style>
+
+
 </resources>

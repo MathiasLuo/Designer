@@ -1,13 +1,21 @@
 package com.mathiasluo.designer.service;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
+import android.widget.Toast;
 
+import com.mathiasluo.designer.app.APP;
 import com.mathiasluo.designer.bean.Shot;
+import com.mathiasluo.designer.bean.Team;
+import com.mathiasluo.designer.bean.User;
 import com.mathiasluo.designer.model.service.ServiceAPI;
 import com.mathiasluo.designer.model.service.ServiceAPIModel;
+import com.mathiasluo.designer.utils.LogUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import io.realm.Realm;
 import rx.functions.Action1;
@@ -36,17 +44,35 @@ public class ShotsIntentService extends IntentService {
         int perPage = intent.getIntExtra("perPage", 10);
         mServiceAPI.getShots(page_id, perPage)
                 .subscribe(new Action1<Shot[]>() {
-                    @Override
-                    public void call(Shot[] shots) {
-                        mRealm = Realm.getDefaultInstance();
-                        saveShots(shots);
-                    }
-                });
+                               @Override
+                               public void call(Shot[] shots) {
+                                   mRealm = Realm.getDefaultInstance();
+                                   List<Shot> shotList = new ArrayList<Shot>();
+                                   for (int i = 0; i < shots.length; i++) {
+                                       Shot val = shots[i];
+                                       if (val.getTeam() == null)
+                                           val.setTeam(new Team(new Integer(12345)));
+                                       shotList.add(val);
+                                   }
+                                   saveShots(shotList);
+                               }
+                           }
+
+                        , new Action1<Throwable>()
+
+                        {
+                            @Override
+                            public void call(Throwable throwable) {
+                                LogUtil.jLog().e("出现问题了哟========>>>>>>" + throwable.getMessage());
+                            }
+                        }
+
+                );
     }
 
-    private void saveShots(Shot[] shots) {
+    private void saveShots(List<Shot> shots) {
         mRealm.beginTransaction();
-        mRealm.copyToRealmOrUpdate(Arrays.asList(shots));
+        mRealm.copyToRealmOrUpdate(shots);
         mRealm.commitTransaction();
         mRealm.close();
     }

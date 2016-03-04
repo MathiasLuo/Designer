@@ -21,8 +21,6 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
     public void OnViewResume() {
         super.OnViewResume();
         shotModel = ShotModelImpl.getInstance();
-        shotModel.startUpdata(1, 10);
-
         shotModel
                 .loadShotsWithListener(new RealmChangeListener() {
                     @Override
@@ -36,6 +34,8 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
                         getView().showShots(shots);
                     }
                 });
+        shotModel.startUpdata();
+
     }
 
     public void onDataChange() {
@@ -49,4 +49,11 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
                 });
     }
 
+    public void requestDate() {
+        shotModel.startUpdata();
+    }
+
+    public void requestNewDate() {
+        shotModel.requestNewContent();
+    }
 }
