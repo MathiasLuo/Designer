@@ -14,4 +14,11 @@
 
     <string name="open">打开</string>
     <string name="close">关闭</string>
+
+
+    <string name="nav_header_name">点击头像登录</string>
+    <string name="nav_header_describe">登陆后更加精彩,你懂得...</string>
+    <string name="title_activity_login">登陆</string>
+
+    <string name="login_failed">你还没有成功登陆哟！！！</string>
 </resources>

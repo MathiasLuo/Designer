@@ -6,7 +6,6 @@ import com.mathiasluo.designer.app.APP;
 import com.mathiasluo.designer.bean.Shot;
 import com.mathiasluo.designer.model.IModel.ShotModel;
 import com.mathiasluo.designer.service.ShotsIntentService;
-import com.mathiasluo.designer.utils.LogUtil;
 
 import java.util.List;
 
@@ -77,6 +76,11 @@ public class ShotModelImpl implements ShotModel {
     @Override
     public void requestNewContent() {
         startUpdata(PAGE, PER_PAGE);
+    }
+
+    @Override
+    public void closeSomeThing() {
+        mRealm.close();
     }
 
 

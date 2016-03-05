@@ -1,10 +1,13 @@
 package com.mathiasluo.designer.view;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.jude.swipbackhelper.SwipeBackHelper;
+import com.mathiasluo.designer.R;
 import com.mathiasluo.designer.presenter.BasePresenter;
 import com.mikepenz.iconics.context.IconicsContextWrapper;
 
@@ -20,6 +23,7 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
         mPresenter = creatPresenter();
         mPresenter.attachView((V) this);
     }
+
 
     @Override
     protected void onResume() {
@@ -40,6 +44,10 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
         super.attachBaseContext(IconicsContextWrapper.wrap(newBase));
     }
 
+
+    protected T getPresenter(){
+        return mPresenter;
+    }
 
     protected abstract T creatPresenter();
 

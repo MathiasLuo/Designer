@@ -12,10 +12,9 @@
 
         <ImageView
             android:id="@+id/shot_image"
-            android:maxHeight="@dimen/shot_image_maxheight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@mipmap/test" />
 
         <RelativeLayout

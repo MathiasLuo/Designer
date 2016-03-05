@@ -1,7 +1,7 @@
 package com.mathiasluo.designer.view;
 
+import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -13,14 +13,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mathiasluo.designer.R;
 import com.mathiasluo.designer.adpter.ShotAdapter;
 import com.mathiasluo.designer.bean.Shot;
+import com.mathiasluo.designer.bean.User;
 import com.mathiasluo.designer.presenter.ShotsPresenter;
+import com.mathiasluo.designer.utils.LogUtils;
 import com.mathiasluo.designer.view.IView.IShotsActivity;
+import com.mathiasluo.designer.view.widget.CircleImageView;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.List;
@@ -46,6 +50,11 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
     @Bind(R.id.content_swipe)
     SwipeRefreshLayout mRefreshLayout;
 
+    private final static int REQUTECODE = 0001;
+
+    CircleImageView mUserAvater;
+    TextView mUserName;
+    TextView mUserDesgcribe;
 
     private RecyclerView.LayoutManager mLayoutManager;
     private List<Shot> dataList;
@@ -61,10 +70,14 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
     }
 
     private void init() {
+
+        mUserAvater = (CircleImageView) mNavigationView.getHeaderView(0).findViewById(R.id.nav_header_img);
+        mUserName = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.nav_header_name);
+        mUserDesgcribe = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.nav_header_describe);
         mRecyclerView.setLayoutManager(mLayoutManager = new LinearLayoutManager(this));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(new IconicsDrawable(this).sizeDp(16).icon("gmi_menu").color(Color.WHITE));
-
+        mUserAvater.setImageBitmap(new IconicsDrawable(this).sizeDp(66).icon("gmi_account").color(Color.WHITE).toBitmap());
         setListener();
     }
 
@@ -81,7 +94,7 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
                         return true;
                     }
                 });
-
+        //下拉刷新
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -90,6 +103,7 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
             }
         });
 
+        //上拉加载
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -106,7 +120,26 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
 
             }
         });
+        //头像登录
+        mUserAvater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(ShotsActivity.this, LoginActivity.class), REQUTECODE);
+                //不关闭抽屉，便于登陆后直观看到效果
+                // mDrawerLayout.closeDrawers();
+            }
+        });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUTECODE) {
+            LogUtils.d("用户登录成功");
+            //加载设置用户信息
+            //..............
+        }
     }
 
     @Override
@@ -136,6 +169,11 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
     @Override
     public void closeProgress() {
         mRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void uploadUserInfo(User user) {
+
     }
 
 

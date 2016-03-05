@@ -48,4 +48,12 @@ dependencies {
 
     compile 'com.mikepenz:iconics-core:2.5.8@aar'
     compile 'com.mikepenz:material-design-iconic-typeface:2.2.0.1@aar'
+
+    compile 'com.jude:swipebackhelper:2.1.5'
+
+
+    compile 'com.github.orhanobut:logger:1.12'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.5.2@aar'
+
+
 }

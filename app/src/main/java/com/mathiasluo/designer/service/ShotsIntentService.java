@@ -1,20 +1,15 @@
 package com.mathiasluo.designer.service;
 
-import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
-import android.widget.Toast;
 
-import com.mathiasluo.designer.app.APP;
 import com.mathiasluo.designer.bean.Shot;
 import com.mathiasluo.designer.bean.Team;
-import com.mathiasluo.designer.bean.User;
 import com.mathiasluo.designer.model.service.ServiceAPI;
 import com.mathiasluo.designer.model.service.ServiceAPIModel;
-import com.mathiasluo.designer.utils.LogUtil;
+import com.mathiasluo.designer.utils.LogUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.realm.Realm;
@@ -63,7 +58,7 @@ public class ShotsIntentService extends IntentService {
                         {
                             @Override
                             public void call(Throwable throwable) {
-                                LogUtil.jLog().e("出现问题了哟========>>>>>>" + throwable.getMessage());
+                               LogUtils.e("出现问题了哟========>>>>>>" + throwable.getMessage());
                             }
                         }
 

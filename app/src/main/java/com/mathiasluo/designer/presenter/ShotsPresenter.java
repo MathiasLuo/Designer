@@ -38,6 +38,12 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
 
     }
 
+    @Override
+    public void onViewDestroy() {
+        super.onViewDestroy();
+        shotModel.closeSomeThing();
+    }
+
     public void onDataChange() {
         shotModel
                 .loadShots()

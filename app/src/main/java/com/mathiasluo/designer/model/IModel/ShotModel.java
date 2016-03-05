@@ -19,6 +19,9 @@ public interface ShotModel {
     void startUpdata(int page, int per_page);
 
     void startUpdata();
+
     void requestNewContent();
+
+    void closeSomeThing();
 
 }

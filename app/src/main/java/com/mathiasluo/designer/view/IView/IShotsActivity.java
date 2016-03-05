@@ -1,5 +1,7 @@
 package com.mathiasluo.designer.view.IView;
 
+import com.mathiasluo.designer.bean.User;
+
 import java.util.List;
 
 /**
@@ -12,4 +14,5 @@ public interface IShotsActivity<T> {
     void showProgress();
 
     void closeProgress();
+    void uploadUserInfo(User user);
 }
