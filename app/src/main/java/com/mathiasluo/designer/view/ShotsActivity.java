@@ -86,21 +86,15 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
         mDrawerLayout.addDrawerListener(new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close));
 
         mNavigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem item) {
-                        item.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        return true;
-                    }
+                item -> {
+                    item.setChecked(true);
+                    mDrawerLayout.closeDrawers();
+                    return true;
                 });
         //下拉刷新
-        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mPresenter.requestNewDate();
-                mRefreshLayout.setRefreshing(true);
-            }
+        mRefreshLayout.setOnRefreshListener(() -> {
+            mPresenter.requestNewDate();
+            mRefreshLayout.setRefreshing(true);
         });
 
         //上拉加载
@@ -121,13 +115,10 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
             }
         });
         //头像登录
-        mUserAvater.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(ShotsActivity.this, LoginActivity.class), REQUTECODE);
-                //不关闭抽屉，便于登陆后直观看到效果
-                // mDrawerLayout.closeDrawers();
-            }
+        mUserAvater.setOnClickListener(v -> {
+            startActivityForResult(new Intent(ShotsActivity.this, LoginActivity.class), REQUTECODE);
+            //不关闭抽屉，便于登陆后直观看到效果
+            // mDrawerLayout.closeDrawers();
         });
 
     }

@@ -22,17 +22,9 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
         super.OnViewResume();
         shotModel = ShotModelImpl.getInstance();
         shotModel
-                .loadShotsWithListener(new RealmChangeListener() {
-                    @Override
-                    public void onChange() {
-                        onDataChange();
-                    }
-                })
-                .subscribe(new Action1<List<Shot>>() {
-                    @Override
-                    public void call(List<Shot> shots) {
-                        getView().showShots(shots);
-                    }
+                .loadShotsWithListener(() -> onDataChange())
+                .subscribe(shots -> {
+                    getView().showShots(shots);
                 });
         shotModel.startUpdata();
 
@@ -47,11 +39,8 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
     public void onDataChange() {
         shotModel
                 .loadShots()
-                .subscribe(new Action1<List<Shot>>() {
-                    @Override
-                    public void call(List<Shot> shots) {
-                        getView().showShots(shots);
-                    }
+                .subscribe(shots -> {
+                    getView().showShots(shots);
                 });
     }
 

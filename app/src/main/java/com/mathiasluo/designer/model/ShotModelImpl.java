@@ -87,12 +87,7 @@ public class ShotModelImpl implements ShotModel {
     @Override
     public Observable<List<Shot>> loadShots() {
         Observable observable = mRealm.where(Shot.class).findAll().asObservable()
-                .filter(new Func1<RealmResults<Shot>, Boolean>() {
-                    @Override
-                    public Boolean call(RealmResults<Shot> shots) {
-                        return shots.isLoaded();
-                    }
-                });
+                .filter(shots -> shots.isLoaded());
         return observable;
     }
 }

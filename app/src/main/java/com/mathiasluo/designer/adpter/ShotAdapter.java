@@ -78,27 +78,24 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
             holder.likeCountText.setText(shot.getLikesCount().toString() + " 人喜欢这张照片。");
             holder.usernameText.setText(shot.getUser().getUsername().toString());
             //  holder.viewsCountText.setText(shot.getViewsCount().toString());
-            holder.mFavoriteImg.setOnClickListener(new View.OnClickListener() {
-                                                       @Override
-                                                       public void onClick(View v) {
-                                                           if (!holder.ISLIKE) {
-                                                               holder
-                                                                       .mFavoriteImg
-                                                                       .setImageDrawable(new IconicsDrawable(APP.getInstance(), "gmi_favorite")
-                                                                               .color(Color.parseColor("#FF4081"))
-                                                                       );
-                                                               holder.ISLIKE = true;
-                                                           } else {
-                                                               holder
-                                                                       .mFavoriteImg
-                                                                       .setImageDrawable(new IconicsDrawable(APP.getInstance(), "gmi_favorite_outline")
-                                                                               .color(Color.parseColor("#FF4081"))
-                                                                       );
-                                                               holder.ISLIKE = false;
-                                                           }
+            holder.mFavoriteImg.setOnClickListener(v -> {
+                        if (!holder.ISLIKE) {
+                            holder
+                                    .mFavoriteImg
+                                    .setImageDrawable(new IconicsDrawable(APP.getInstance(), "gmi_favorite")
+                                            .color(Color.parseColor("#FF4081"))
+                                    );
+                            holder.ISLIKE = true;
+                        } else {
+                            holder
+                                    .mFavoriteImg
+                                    .setImageDrawable(new IconicsDrawable(APP.getInstance(), "gmi_favorite_outline")
+                                            .color(Color.parseColor("#FF4081"))
+                                    );
+                            holder.ISLIKE = false;
+                        }
 
-                                                       }
-                                                   }
+                    }
             );
 
             ImageModelImpl.getInstance().loadImage(shot.getImages().getNormal(), holder.shotImage);

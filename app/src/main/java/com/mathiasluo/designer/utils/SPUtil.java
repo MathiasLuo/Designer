@@ -26,7 +26,6 @@ public class SPUtil {
 
 
     public final static void removeAccessToken(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
         SharedPreferences share = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = share.edit();
         editor.putString(DATA, NOACESSTOKEN);

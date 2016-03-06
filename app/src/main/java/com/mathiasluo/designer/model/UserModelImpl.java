@@ -19,22 +19,14 @@ public class UserModelImpl implements UserModel {
         final String accessToken = SPUtil.getAccessToken(APP.getInstance());
         if (!accessToken.equals(SPUtil.NOACESSTOKEN)) {
             return Observable.just(accessToken)
-                    .flatMap(new Func1<String, Observable<User>>() {
-                                 @Override
-                                 public Observable<User> call(String s) {
-                                     Realm mRealm = Realm.getDefaultInstance();
-                                     return mRealm.where(User.class)
-                                             .equalTo("accessToken", accessToken)
-                                             .findAllAsync()
-                                             .asObservable()
-                                             .flatMap(new Func1<RealmResults<User>, Observable<User>>() {
-                                                 @Override
-                                                 public Observable<User> call(RealmResults<User> users) {
-                                                     return Observable.from(users);
-                                                 }
-                                             });
-                                 }
-                             }
+                    .flatMap(s -> {
+                                Realm mRealm = Realm.getDefaultInstance();
+                                return mRealm.where(User.class)
+                                        .equalTo("accessToken", accessToken)
+                                        .findAllAsync()
+                                        .asObservable()
+                                        .flatMap(users -> Observable.from(users));
+                            }
                     )
                     ;
 

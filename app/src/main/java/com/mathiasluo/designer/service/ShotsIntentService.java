@@ -38,28 +38,20 @@ public class ShotsIntentService extends IntentService {
         int page_id = intent.getIntExtra("page_id", 1);
         int perPage = intent.getIntExtra("perPage", 10);
         mServiceAPI.getShots(page_id, perPage)
-                .subscribe(new Action1<Shot[]>() {
-                               @Override
-                               public void call(Shot[] shots) {
-                                   mRealm = Realm.getDefaultInstance();
-                                   List<Shot> shotList = new ArrayList<Shot>();
-                                   for (int i = 0; i < shots.length; i++) {
-                                       Shot val = shots[i];
-                                       if (val.getTeam() == null)
-                                           val.setTeam(new Team(new Integer(12345)));
-                                       shotList.add(val);
-                                   }
-                                   saveShots(shotList);
-                               }
-                           }
+                .subscribe(shots -> {
+                    mRealm = Realm.getDefaultInstance();
+                    List<Shot> shotList = new ArrayList<>();
+                    for (int i = 0; i < shots.length; i++) {
+                        Shot val = shots[i];
+                        if (val.getTeam() == null)
+                            val.setTeam(new Team(new Integer(12345)));
+                        shotList.add(val);
+                    }
+                    saveShots(shotList);
+                }
 
-                        , new Action1<Throwable>()
-
-                        {
-                            @Override
-                            public void call(Throwable throwable) {
-                               LogUtils.e("出现问题了哟========>>>>>>" + throwable.getMessage());
-                            }
+                        , throwable -> {
+                           LogUtils.e("出现问题了哟========>>>>>>" + throwable.getMessage());
                         }
 
                 );

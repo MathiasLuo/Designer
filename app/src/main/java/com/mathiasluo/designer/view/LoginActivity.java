@@ -48,12 +48,9 @@ public class LoginActivity extends SwipBaseActivity<LoginActivity, LoginPresente
     private void init() {
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(new IconicsDrawable(this).icon("gmi_arrow_back").sizeDp(16).color(Color.WHITE));
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
-                LoginActivity.this.finish();
-            }
+        mToolbar.setNavigationOnClickListener(v -> {
+            Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
+            LoginActivity.this.finish();
         });
 
         mWebView.getSettings().setJavaScriptEnabled(true);
