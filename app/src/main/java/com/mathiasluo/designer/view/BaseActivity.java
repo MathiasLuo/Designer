@@ -22,6 +22,7 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
         super.onCreate(savedInstanceState);
         mPresenter = creatPresenter();
         mPresenter.attachView((V) this);
+        mPresenter.OnViewCreate();
     }
 
 
@@ -45,7 +46,7 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
     }
 
 
-    protected T getPresenter(){
+    protected T getPresenter() {
         return mPresenter;
     }
 

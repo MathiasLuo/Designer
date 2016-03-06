@@ -10,6 +10,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 public interface ImageModel {
 
     void loadImage(String url, ImageView imageView);
+
     void loadImageWithTargetView(String url, SimpleTarget simpleTarget);
 
 }

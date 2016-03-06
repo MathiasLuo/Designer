@@ -13,4 +13,13 @@ public interface UserModel {
 
     Observable deleteCurrentUser();
 
+    Observable<User> queryUserFromReaml(String accessToken);
+
+    Observable<String> Login2GetAccessToken(String oauthCode);
+
+    Observable<User> getUseWithAccessToken(String accessToken);
+
+    Observable<User> setCurrentUser(User user);
+
+    void saveUserToReaml(User user);
 }

@@ -16,7 +16,7 @@ public interface ShotModel {
 
     Observable<List<Shot>> loadShotsWithListener(RealmChangeListener listener);
 
-    void startUpdata(int page, int per_page);
+    void startUpdata(int page, int per_page, boolean clear_realm);
 
     void startUpdata();
 

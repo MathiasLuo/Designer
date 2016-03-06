@@ -14,5 +14,6 @@ public interface IShotsActivity<T> {
     void showProgress();
 
     void closeProgress();
+
     void uploadUserInfo(User user);
 }

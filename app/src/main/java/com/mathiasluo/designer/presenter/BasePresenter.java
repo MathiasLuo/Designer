@@ -38,6 +38,10 @@ public abstract class BasePresenter<T> {
 
     }
 
+    public void OnViewCreate() {
+
+    }
+
     public void onViewDestroy() {
 
     }

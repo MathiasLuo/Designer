@@ -24,6 +24,8 @@ public class User extends RealmObject {
     @SerializedName("avatar_url")
     @Expose
     private String avatarUrl;
+
+
     @SerializedName("bio")
     @Expose
     private String bio;
@@ -102,6 +104,8 @@ public class User extends RealmObject {
 
 
     private String accessToken;
+
+
 
     public String getAccessToken() {
         return accessToken;

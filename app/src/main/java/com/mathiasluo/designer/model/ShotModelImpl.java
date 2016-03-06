@@ -13,7 +13,9 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by MathiasLuo on 2016/3/1.
@@ -59,23 +61,24 @@ public class ShotModelImpl implements ShotModel {
     }
 
     @Override
-    public void startUpdata(int page, int per_page) {
+    public void startUpdata(int page, int per_page, boolean clear_realm) {
+
         Intent intentService = new Intent(APP.getInstance(), ShotsIntentService.class);
         intentService.putExtra("page_id", page);
         intentService.putExtra("perPage", per_page);
+        intentService.putExtra("clear_realm", clear_realm);
         APP.getInstance().startService(intentService);
-
     }
 
     @Override
     public void startUpdata() {
-        startUpdata(page, perPage);
+        startUpdata(page, perPage, false);
         page++;
     }
 
     @Override
     public void requestNewContent() {
-        startUpdata(PAGE, PER_PAGE);
+        startUpdata(PAGE, PER_PAGE, true);
     }
 
     @Override
@@ -86,8 +89,17 @@ public class ShotModelImpl implements ShotModel {
 
     @Override
     public Observable<List<Shot>> loadShots() {
-        Observable observable = mRealm.where(Shot.class).findAll().asObservable()
-                .filter(shots -> shots.isLoaded());
+        Observable observable = mRealm.where(Shot.class)
+                .findAllAsync()
+                .asObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter(shots -> shots.isLoaded())
+                .map(new Func1<RealmResults<Shot>, RealmResults<Shot>>() {
+                    @Override
+                    public RealmResults<Shot> call(RealmResults<Shot> shots) {
+                        return shots;
+                    }
+                });
         return observable;
     }
 }

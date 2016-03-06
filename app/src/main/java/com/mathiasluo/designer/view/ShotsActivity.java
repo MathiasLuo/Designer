@@ -15,12 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mathiasluo.designer.R;
 import com.mathiasluo.designer.adpter.ShotAdapter;
 import com.mathiasluo.designer.bean.Shot;
 import com.mathiasluo.designer.bean.User;
+import com.mathiasluo.designer.model.UserModelImpl;
 import com.mathiasluo.designer.presenter.ShotsPresenter;
 import com.mathiasluo.designer.utils.LogUtils;
 import com.mathiasluo.designer.view.IView.IShotsActivity;
@@ -31,6 +33,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.functions.Action1;
 
 public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> implements IShotsActivity<Shot> {
 
@@ -67,6 +70,7 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
         setContentView(R.layout.activity_shots);
         ButterKnife.bind(this);
         init();
+        mPresenter.loadDataFromReaml();
     }
 
     private void init() {
@@ -94,7 +98,8 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
         //下拉刷新
         mRefreshLayout.setOnRefreshListener(() -> {
             mPresenter.requestNewDate();
-            mRefreshLayout.setRefreshing(true);
+            mPresenter.updataUserInfo();
+            showProgress();
         });
 
         //上拉加载
@@ -130,6 +135,7 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
             LogUtils.d("用户登录成功");
             //加载设置用户信息
             //..............
+            mPresenter.showUserInfo();
         }
     }
 
@@ -164,7 +170,12 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
 
     @Override
     public void uploadUserInfo(User user) {
-
+        //设置用户头像
+        mPresenter.loadImageWithurl(user.getAvatarUrl(), mUserAvater);
+        //设置用户其他信息
+        //........
+        mUserName.setText(user.getUsername());
+        mUserDesgcribe.setText(user.getHtmlUrl());
     }
 
 

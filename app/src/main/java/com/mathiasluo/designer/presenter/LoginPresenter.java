@@ -6,6 +6,8 @@ import com.mathiasluo.designer.app.APP;
 import com.mathiasluo.designer.bean.AccessToken;
 import com.mathiasluo.designer.bean.AuthBody;
 import com.mathiasluo.designer.bean.User;
+import com.mathiasluo.designer.model.IModel.UserModel;
+import com.mathiasluo.designer.model.UserModelImpl;
 import com.mathiasluo.designer.model.service.ServiceAPI;
 import com.mathiasluo.designer.model.service.ServiceAPIModel;
 import com.mathiasluo.designer.utils.LogUtils;
@@ -27,44 +29,50 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
     ServiceAPI serviceAPI;
     private String accessToken;
     private Realm mRealm;
-
+    private UserModel mUserModel;
 
     @Override
     public void OnViewResume() {
         super.OnViewResume();
         serviceAPI = ServiceAPIModel.provideServiceAPI(ServiceAPIModel.provideOkHttpClient());
+        mUserModel = UserModelImpl.getInstance();
     }
 
 
     public void getAccesToken(final String athuCode) {
         getView().showLoading();
-        serviceAPI
-                .getAccessToken(new AuthBody(athuCode))
+        mUserModel.Login2GetAccessToken(athuCode)
+                .flatMap(new Func1<String, Observable<User>>() {
+                    @Override
+                    public Observable<User> call(String s) {
+                        accessToken = s;
+                        SPUtil.putAccesToken(APP.getInstance(), s);
+                        return mUserModel.getUseWithAccessToken(s);
+                    }
+                })
                 .subscribeOn(Schedulers.newThread())
-                .flatMap(Token -> {
-                    accessToken = Token.getAccess_token();
-                    SPUtil.putAccesToken(APP.getInstance(), accessToken);
-                    return serviceAPI.getUserWithAccessToken(accessToken);
+                .map(new Func1<User, User>() {
+                    @Override
+                    public User call(User user) {
+                        user.setAccessToken(accessToken);
+                        mUserModel.saveUserToReaml(user);
+                        return user;
+                    }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(user -> {
-                    closeLoading();
-                    return user;
-                })
-                .observeOn(Schedulers.newThread())
-                .subscribe(user -> {
-                    user.setAccessToken(athuCode);
-                    mRealm = Realm.getDefaultInstance();
-                    mRealm.beginTransaction();
-                    mRealm.copyToRealmOrUpdate(user);
-                    mRealm.commitTransaction();
-                    mRealm.close();
-                    getView().setResult(Activity.RESULT_OK);
-                    getView().finish();
-                }, throwable -> {
-                    LogUtils.e("又是在这里出现了问题呀----->" + throwable.toString());
+                .subscribe(new Action1<User>() {
+                    @Override
+                    public void call(User user) {
+                        closeLoading();
+                        getView().setResult(Activity.RESULT_OK);
+                        getView().finish();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        LogUtils.e("又是在这里出现了问题呀----->" + throwable.toString());
+                    }
                 });
-
     }
 
 

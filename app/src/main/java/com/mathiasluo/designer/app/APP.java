@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.v4.view.LayoutInflaterCompat;
 
 import com.mathiasluo.designer.utils.LogUtils;
+import com.mathiasluo.designer.utils.MyActivityManager;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.iconics.context.IconicsLayoutInflater;
 
@@ -28,8 +29,9 @@ public class APP extends Application {
         instance = this;
         RealmConfiguration configuration = new RealmConfiguration.Builder(this).build();
         Realm.setDefaultConfiguration(configuration);
-         //初始化Log
+        //初始化Log
         LogUtils.isDebug = true;
         com.orhanobut.logger.Logger.init();
+        MyActivityManager.getInstance().init(this);
     }
 }
