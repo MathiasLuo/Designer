@@ -59,32 +59,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/decortint" />
-        <!--  <LinearLayout
-              android:id="@+id/lin_1"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_below="@id/rel_1"
-              android:paddingBottom="6dp"
-              android:paddingTop="6dp">
-
-              <ImageView
-                  android:id="@+id/viewsCount_image"
-                  android:layout_width="20dp"
-                  android:layout_height="20dp"
-                  android:layout_gravity="center_vertical"
-                  android:layout_marginLeft="10dp"
-                  android:layout_marginRight="4dp"
-                  app:ico_color="@color/shot_icon_color"
-                  app:ico_icon="gmi_eye" />
-
-              <TextView
-                  android:id="@+id/viewsCount_text"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginRight="10dp"
-                  android:text="100"
-                  android:textSize="16dp" />
-          </LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/lin_2"

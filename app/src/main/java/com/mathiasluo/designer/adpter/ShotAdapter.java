@@ -21,6 +21,9 @@ import com.mathiasluo.designer.utils.DensityUtil;
 import com.mathiasluo.designer.view.widget.CircleImageView;
 import com.mikepenz.iconics.IconicsDrawable;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -40,6 +43,8 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
     private int load_more_status = 0;
 
     private List<Shot> mDataList;
+
+    private int pre_page = 1;
 
     public ShotAdapter(List<Shot> mDataList) {
         this.mDataList = mDataList;
@@ -102,7 +107,7 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
             );
 
             ViewGroup.LayoutParams params = holder.shotImage.getLayoutParams();
-            params.height = DensityUtil.dip2px( APP.getInstance(), shot.getHeight());
+            params.height = DensityUtil.dip2px(APP.getInstance(), shot.getHeight());
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             holder.shotImage.setLayoutParams(params);
 
@@ -122,9 +127,13 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
     }
 
 
-    public void addMoreData(List<Shot> datas) {
+    public void addMoreData(List<Shot> datas, int current_page) {
         mDataList.addAll(datas);
+        if (current_page == pre_page) {
+            removeDuplicateDataInOrder(mDataList);
+        }
         notifyDataSetChanged();
+        pre_page = current_page;
     }
 
     /**
@@ -140,6 +149,20 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
     public void changeMoreStatus(int status) {
         load_more_status = status;
         notifyDataSetChanged();
+    }
+
+    public static List<Shot> removeDuplicateDataInOrder(List<Shot> list) {
+        HashSet<Shot> hashSet = new HashSet<Shot>();
+        List<Shot> newlist = new ArrayList<Shot>();
+        for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
+            Shot element = (Shot) iterator.next();
+            if (hashSet.add(element)) {
+                newlist.add(element);
+            }
+        }
+        list.clear();
+        list.addAll(newlist);
+        return list;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

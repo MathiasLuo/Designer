@@ -48,8 +48,6 @@ public class ImageModelImpl implements ImageModel {
                 .asBitmap()
               /*  .placeholder(R.drawable.img_on_laoding)
                 .error(R.drawable.img_on_laoding)*/
-
-
                 .into(simpleTarget);
     }
 }

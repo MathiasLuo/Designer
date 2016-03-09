@@ -1,5 +1,7 @@
 package com.mathiasluo.designer.view.IView;
 
+import android.os.Handler;
+
 import com.mathiasluo.designer.bean.User;
 
 /**

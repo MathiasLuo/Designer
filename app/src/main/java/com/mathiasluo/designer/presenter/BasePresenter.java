@@ -34,6 +34,10 @@ public abstract class BasePresenter<T> {
         }
     }
 
+    public void OnViewStop(){
+
+    }
+
     public void OnViewResume() {
 
     }

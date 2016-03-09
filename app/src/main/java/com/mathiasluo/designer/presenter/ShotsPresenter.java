@@ -1,7 +1,7 @@
 package com.mathiasluo.designer.presenter;
 
 import android.graphics.Bitmap;
-import android.widget.ImageView;
+import android.os.Handler;
 
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -22,8 +22,9 @@ import com.mathiasluo.designer.view.widget.CircleImageView;
 
 import java.util.List;
 
-import io.realm.RealmChangeListener;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -34,32 +35,77 @@ import rx.schedulers.Schedulers;
 public class ShotsPresenter extends BasePresenter<ShotsActivity> {
 
     private ShotModel shotModel;
-
     private UserModel userModel;
-
     private static User mCurrentUser;
-    private List<Shot> mCurrentShots;
+    int page = 3;
+    int per_page = 10;
 
+    Shot mShot;
 
     public void loadDataFromReaml() {
         userModel = UserModelImpl.getInstance();
         shotModel = ShotModelImpl.getInstance();
         //开始应用就加载用户信息
         showUserInfo();
-        shotModel
-                .loadShotsWithListener(new RealmChangeListener() {
-                                           @Override
-                                           public void onChange() {
-                                               onDataChange();
-                                           }
-                                       }
-                )
-                .subscribe(shots -> {
-                    mCurrentShots = shots;
-                    getView().showShots(shots);
+        loadShotsFromRealm();
+        requestNewDate();
+
+    }
+
+    public void loadShotsFromServer(int page, int per_page, boolean isShow) {
+        shotModel.getShotsFromServer(page, per_page)
+                .subscribeOn(Schedulers.newThread())
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        getView().getHandler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (isShow) showProgress();
+                            }
+                        });
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Shot>>() {
+                    @Override
+                    public void call(List<Shot> shots) {
+                        closeProgress();
+                        if (mShot != null && (mShot.getId().equals(shots.get(0).getId()) && isShow)) {
+                            ToastUtil.Toast("已经是最新的数据了");
+                        } else if (mShot != null && !(mShot.getId().equals(shots.get(0).getId()) && isShow)) {
+                            shotModel.clearShotsToRealm();
+                            shotModel.saveShotsToRealm(shots);
+                            getView().showShots(shots, page);
+                        } else {
+                            getView().showShots(shots, page);
+                            LogUtils.d("在这里展示了数据" + shots.size());
+                        }
+                        mShot = shots.get(0);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        closeProgress();
+                        ToastUtil.Toast("网络刷新出现了错误");
+                        LogUtils.e("从server中加载数据出错----->>>>" + throwable.toString());
+                    }
                 });
-        shotModel.startUpdata();
-        getView().showProgress();
+    }
+
+    public void loadShotsFromRealm() {
+        shotModel.loadShots()
+                .subscribe(new Action1<List<Shot>>() {
+                    @Override
+                    public void call(List<Shot> shots) {
+                        getView().showShots(shots, 1);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        LogUtils.e("从Realm中加载数据出错----->>>>" + throwable.toString());
+                    }
+                });
     }
 
     @Override
@@ -85,7 +131,6 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
                             userModel.saveUserToReaml(user);
                             return user;
                         }
-                        LogUtils.d("和服务器上的数据一样不用更新");
                         return null;
                     }
                 })
@@ -108,30 +153,14 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
                 });
     }
 
-    public void onDataChange() {
-        shotModel
-                .loadShots()
-                .subscribe(shots -> {
-                    if (shots.get(0).equals(mCurrentShots.get(0))) {
-                     // ToastUtil.Toast("已经是最新的数据了");
-                    } else
-                        getView().showShots(shots);
-                    getView().closeProgress();
-                    mCurrentShots = shots;
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        LogUtils.e("为什么从网络上更新Shot失败呀------>>>>" + throwable.toString());
-                    }
-                });
-    }
 
     public void requestDate() {
-        shotModel.startUpdata();
+        loadShotsFromServer(page, per_page, false);
+        page++;
     }
 
     public void requestNewDate() {
-        shotModel.requestNewContent();
+        loadShotsFromServer(ShotModelImpl.PAGE, ShotModelImpl.PER_PAGE, true);
     }
 
     public void showUserInfo() {
@@ -151,7 +180,6 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
                         });
     }
 
-
     public void loadImageWithurl(String url, CircleImageView imageView) {
         ImageModelImpl.getInstance().loadImageWithTargetView(url, new SimpleTarget<Bitmap>() {
             @Override
@@ -161,5 +189,11 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
         });
     }
 
+    private void showProgress() {
+        getView().showProgress();
+    }
 
+    private void closeProgress() {
+        getView().closeProgress();
+    }
 }

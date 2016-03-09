@@ -3,6 +3,7 @@ package com.mathiasluo.designer.view;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
@@ -16,11 +17,13 @@ import com.mikepenz.iconics.context.IconicsContextWrapper;
  */
 public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCompatActivity {
     protected T mPresenter;
+    protected Handler mHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = creatPresenter();
+        mHandler = new Handler();
         mPresenter.attachView((V) this);
         mPresenter.OnViewCreate();
     }
@@ -39,6 +42,11 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
         mPresenter.onViewDestroy();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mPresenter.OnViewStop();
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -51,6 +59,10 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
     }
 
     protected abstract T creatPresenter();
+
+    protected Handler getHandler() {
+        return mHandler;
+    }
 
 
 }

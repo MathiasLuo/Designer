@@ -1,21 +1,19 @@
 package com.mathiasluo.designer.model;
 
-import android.content.Intent;
-
-import com.mathiasluo.designer.app.APP;
 import com.mathiasluo.designer.bean.Shot;
+import com.mathiasluo.designer.bean.Team;
 import com.mathiasluo.designer.model.IModel.ShotModel;
-import com.mathiasluo.designer.service.ShotsIntentService;
+import com.mathiasluo.designer.model.service.ServiceAPI;
+import com.mathiasluo.designer.model.service.ServiceAPIModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by MathiasLuo on 2016/3/1.
@@ -24,12 +22,11 @@ public class ShotModelImpl implements ShotModel {
 
     private Realm mRealm;
     private static ShotModelImpl instance;
+    private static ServiceAPI mServiceAPI;
 
-    private final static int PAGE = 1;
-    private final static int PER_PAGE = 10;
+    public final static int PAGE = 1;
+    public final static int PER_PAGE = 10;
 
-    private int page = 1;
-    private int perPage = 10;
 
     public final static ShotModelImpl getInstance() {
         if (instance == null) {
@@ -42,43 +39,45 @@ public class ShotModelImpl implements ShotModel {
     }
 
     private ShotModelImpl() {
-        mRealm = Realm.getDefaultInstance();
+
+        mServiceAPI = ServiceAPIModel.provideServiceAPI(ServiceAPIModel.provideOkHttpClient());
     }
 
 
     @Override
-    public Observable<List<Shot>> loadShotsWithListener(final RealmChangeListener listener) {
-
-        Observable observable = mRealm.where(Shot.class).findAll().asObservable()
-                .filter(new Func1<RealmResults<Shot>, Boolean>() {
+    public Observable<List<Shot>> getShotsFromServer(int page, int per_page) {
+        return mServiceAPI.getShots(page, per_page)
+                .map(new Func1<Shot[], List<Shot>>() {
                     @Override
-                    public Boolean call(RealmResults<Shot> shots) {
-                        shots.addChangeListener(listener);
-                        return shots.isLoaded();
+                    public List<Shot> call(Shot[] shots) {
+                        List<Shot> shotList = new ArrayList<>();
+                        for (int i = 0; i < shots.length; i++) {
+                            Shot val = shots[i];
+                            if (val.getTeam() == null)
+                                val.setTeam(new Team(new Integer(12345)));
+                            shotList.add(val);
+                        }
+                        return shotList;
                     }
                 });
-        return observable;
     }
 
     @Override
-    public void startUpdata(int page, int per_page, boolean clear_realm) {
-
-        Intent intentService = new Intent(APP.getInstance(), ShotsIntentService.class);
-        intentService.putExtra("page_id", page);
-        intentService.putExtra("perPage", per_page);
-        intentService.putExtra("clear_realm", clear_realm);
-        APP.getInstance().startService(intentService);
+    public void saveShotsToRealm(List<Shot> shots) {
+        mRealm = Realm.getDefaultInstance();
+        mRealm.beginTransaction();
+        mRealm.copyToRealmOrUpdate(shots);
+        mRealm.commitTransaction();
+        mRealm.close();
     }
 
     @Override
-    public void startUpdata() {
-        startUpdata(page, perPage, false);
-        page++;
-    }
-
-    @Override
-    public void requestNewContent() {
-        startUpdata(PAGE, PER_PAGE, true);
+    public void clearShotsToRealm() {
+        mRealm = Realm.getDefaultInstance();
+        mRealm.beginTransaction();
+        mRealm.clear(Shot.class);
+        mRealm.commitTransaction();
+        mRealm.close();
     }
 
     @Override
@@ -89,17 +88,28 @@ public class ShotModelImpl implements ShotModel {
 
     @Override
     public Observable<List<Shot>> loadShots() {
+        mRealm = Realm.getDefaultInstance();
         Observable observable = mRealm.where(Shot.class)
                 .findAllAsync()
                 .asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter(shots -> shots.isLoaded())
-                .map(new Func1<RealmResults<Shot>, RealmResults<Shot>>() {
+                .filter(new Func1<RealmResults<Shot>, Boolean>() {
                     @Override
-                    public RealmResults<Shot> call(RealmResults<Shot> shots) {
-                        return shots;
+                    public Boolean call(RealmResults<Shot> shots) {
+                        return shots.isLoaded();
+                    }
+                })
+                .map(new Func1<RealmResults<Shot>, List<Shot>>() {
+                    @Override
+                    public List<Shot> call(RealmResults<Shot> shots) {
+                        ArrayList<Shot> LIST = new ArrayList<Shot>();
+                        for (Shot shot : shots) LIST.add(shot);
+
+                        return LIST;
                     }
                 });
         return observable;
     }
+
+
 }

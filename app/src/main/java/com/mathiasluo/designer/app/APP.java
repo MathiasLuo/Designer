@@ -27,7 +27,8 @@ public class APP extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        RealmConfiguration configuration = new RealmConfiguration.Builder(this).build();
+        RealmConfiguration configuration = new RealmConfiguration.Builder(this)
+                .build();
         Realm.setDefaultConfiguration(configuration);
         //初始化Log
         LogUtils.isDebug = true;

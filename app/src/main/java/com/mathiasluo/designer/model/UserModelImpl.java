@@ -73,10 +73,7 @@ public class UserModelImpl implements UserModel {
                             .findAllAsync()
                             .asObservable()
                             .flatMap(users ->
-                            {
-                                LogUtils.e("这里出现了问题吗" + users.toString());
-                                return Observable.from(users);
-                            });
+                                    Observable.from(users));
                 });
 
     }
@@ -120,6 +117,4 @@ public class UserModelImpl implements UserModel {
         mRealm.commitTransaction();
         mRealm.close();
     }
-
-
 }

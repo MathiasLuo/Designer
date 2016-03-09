@@ -8,10 +8,10 @@ import android.widget.Toast;
 public class ToastUtil {
 
     public final static void Toast(String string) {
-        toast(string, Toast.LENGTH_SHORT);
+        Toast(string, Toast.LENGTH_SHORT);
     }
 
-    public final static void toast(String string, int dur) {
+    public final static void Toast(String string, int dur) {
         Toast.makeText(MyActivityManager.getInstance().getCurentActivity(), string, dur).show();
     }
 }

@@ -4,7 +4,6 @@ import com.mathiasluo.designer.bean.Shot;
 
 import java.util.List;
 
-import io.realm.RealmChangeListener;
 import rx.Observable;
 
 /**
@@ -14,14 +13,13 @@ public interface ShotModel {
 
     Observable<List<Shot>> loadShots();
 
-    Observable<List<Shot>> loadShotsWithListener(RealmChangeListener listener);
+    Observable<List<Shot>> getShotsFromServer(int page, int per_page);
 
-    void startUpdata(int page, int per_page, boolean clear_realm);
-
-    void startUpdata();
-
-    void requestNewContent();
+    void saveShotsToRealm(List<Shot> shots);
 
     void closeSomeThing();
+
+    void clearShotsToRealm();
+
 
 }

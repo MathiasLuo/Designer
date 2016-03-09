@@ -3,6 +3,7 @@ package com.mathiasluo.designer.view;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -131,7 +132,7 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUTECODE) {
+        if (resultCode == RESULT_OK) {
             LogUtils.d("用户登录成功");
             //加载设置用户信息
             //..............
@@ -145,16 +146,13 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
     }
 
     @Override
-    public void showShots(List<Shot> list) {
-
+    public void showShots(List<Shot> list, int current_page) {
         if (dataList == null) {
             dataList = list;
             mShotAdapter = new ShotAdapter(list);
             mRecyclerView.setAdapter(mShotAdapter);
         } else {
-            closeProgress();
-            dataList = list;
-            mShotAdapter.notifyDataSetChanged();
+            mShotAdapter.addMoreData(list, current_page);
         }
     }
 
@@ -191,5 +189,10 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Handler getHandler() {
+        return super.getHandler();
     }
 }
