@@ -61,8 +61,11 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
     TextView mUserDesgcribe;
 
     private RecyclerView.LayoutManager mLayoutManager;
+
     private List<Shot> dataList;
+
     private ShotAdapter mShotAdapter;
+
     private int lastVisableItem;
 
     @Override
@@ -82,7 +85,6 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
         mRecyclerView.setLayoutManager(mLayoutManager = new LinearLayoutManager(this));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(new IconicsDrawable(this).sizeDp(16).icon("gmi_menu").color(Color.WHITE));
-        mUserAvater.setImageBitmap(new IconicsDrawable(this).sizeDp(66).icon("gmi_account").color(Color.WHITE).toBitmap());
         setListener();
     }
 
@@ -122,9 +124,13 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
         });
         //头像登录
         mUserAvater.setOnClickListener(v -> {
-            startActivityForResult(new Intent(ShotsActivity.this, LoginActivity.class), REQUTECODE);
-            //不关闭抽屉，便于登陆后直观看到效果
-            // mDrawerLayout.closeDrawers();
+            if (getPresenter().getCurrentUser() == null)
+                startActivityForResult(new Intent(ShotsActivity.this, LoginActivity.class), REQUTECODE);
+                //不关闭抽屉，便于登陆后直观看到效果
+                // mDrawerLayout.closeDrawers();
+            else {
+                //如果已经登陆，就打开个人主页
+            }
         });
 
     }
@@ -135,7 +141,6 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
         if (resultCode == RESULT_OK) {
             LogUtils.d("用户登录成功");
             //加载设置用户信息
-            //..............
             mPresenter.showUserInfo();
         }
     }
@@ -170,8 +175,7 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
     public void uploadUserInfo(User user) {
         //设置用户头像
         mPresenter.loadImageWithurl(user.getAvatarUrl(), mUserAvater);
-        //设置用户其他信息
-        //........
+        //设置用户其他信息...
         mUserName.setText(user.getUsername());
         mUserDesgcribe.setText(user.getHtmlUrl());
     }
@@ -179,7 +183,7 @@ public class ShotsActivity extends BaseActivity<ShotsActivity, ShotsPresenter> i
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_shots_drawer, menu);
+        //  getMenuInflater().inflate(R.menu.activity_shots_drawer, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

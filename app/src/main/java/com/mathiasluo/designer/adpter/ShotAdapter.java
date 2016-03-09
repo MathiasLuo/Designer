@@ -22,6 +22,8 @@ import com.mathiasluo.designer.view.widget.CircleImageView;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -85,7 +87,7 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
             holder.commentsCountText.setText(shot.getCommentsCount().toString());
             holder.likeCountText.setText(shot.getLikesCount().toString() + " 人喜欢这张照片。");
             holder.usernameText.setText(shot.getUser().getUsername().toString());
-            //  holder.viewsCountText.setText(shot.getViewsCount().toString());
+            // holder.viewsCountText.setText(shot.getViewsCount().toString());
             holder.mFavoriteImg.setOnClickListener(v -> {
                         if (!holder.ISLIKE) {
                             holder
@@ -130,10 +132,10 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
     public void addMoreData(List<Shot> datas, int current_page) {
         mDataList.addAll(datas);
         if (current_page == pre_page) {
-            removeDuplicateDataInOrder(mDataList);
+            mDataList = datas;
         }
         notifyDataSetChanged();
-        pre_page = current_page;
+
     }
 
     /**
@@ -162,6 +164,7 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
         }
         list.clear();
         list.addAll(newlist);
+        // Collections.reverse(list);
         return list;
     }
 

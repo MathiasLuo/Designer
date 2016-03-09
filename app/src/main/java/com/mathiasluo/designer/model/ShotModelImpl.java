@@ -5,6 +5,7 @@ import com.mathiasluo.designer.bean.Team;
 import com.mathiasluo.designer.model.IModel.ShotModel;
 import com.mathiasluo.designer.model.service.ServiceAPI;
 import com.mathiasluo.designer.model.service.ServiceAPIModel;
+import com.mathiasluo.designer.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,7 @@ public class ShotModelImpl implements ShotModel {
         mRealm.copyToRealmOrUpdate(shots);
         mRealm.commitTransaction();
         mRealm.close();
+        LogUtils.d("保存了新来的Shot");
     }
 
     @Override
@@ -78,6 +80,7 @@ public class ShotModelImpl implements ShotModel {
         mRealm.clear(Shot.class);
         mRealm.commitTransaction();
         mRealm.close();
+        LogUtils.d("清除了所有Shot");
     }
 
     @Override

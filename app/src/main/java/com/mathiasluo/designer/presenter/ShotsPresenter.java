@@ -1,7 +1,6 @@
 package com.mathiasluo.designer.presenter;
 
 import android.graphics.Bitmap;
-import android.os.Handler;
 
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -22,7 +21,6 @@ import com.mathiasluo.designer.view.widget.CircleImageView;
 
 import java.util.List;
 
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
@@ -36,11 +34,12 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
 
     private ShotModel shotModel;
     private UserModel userModel;
-    private static User mCurrentUser;
-    int page = 3;
+    private static User mCurrentUser = null;
+    int page = 2;
     int per_page = 10;
 
     Shot mShot;
+    boolean realm_is_null = false;
 
     public void loadDataFromReaml() {
         userModel = UserModelImpl.getInstance();
@@ -49,7 +48,6 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
         showUserInfo();
         loadShotsFromRealm();
         requestNewDate();
-
     }
 
     public void loadShotsFromServer(int page, int per_page, boolean isShow) {
@@ -66,17 +64,28 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
                         });
                     }
                 })
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<Shot>>() {
                     @Override
                     public void call(List<Shot> shots) {
                         closeProgress();
+                        LogUtils.d("这里一共有" + shots.size()
+                                + "个数据\n" + "这里的page是：" + page
+                                + "\n这里的realm_is_null" + realm_is_null
+                                + "\n这里的isShow" + isShow);
                         if (mShot != null && (mShot.getId().equals(shots.get(0).getId()) && isShow)) {
                             ToastUtil.Toast("已经是最新的数据了");
-                        } else if (mShot != null && !(mShot.getId().equals(shots.get(0).getId()) && isShow)) {
+                        } else if (mShot != null && (!(mShot.getId().equals(shots.get(0).getId())) && isShow)) {
                             shotModel.clearShotsToRealm();
                             shotModel.saveShotsToRealm(shots);
                             getView().showShots(shots, page);
+                            LogUtils.d("是在这个条件下保存的");
+                        } else if (realm_is_null) {
+                            shotModel.saveShotsToRealm(shots);
+                            getView().showShots(shots, page);
+                            realm_is_null = false;
+                            LogUtils.d("为什么是在这个条件下保存的呀" );
                         } else {
                             getView().showShots(shots, page);
                             LogUtils.d("在这里展示了数据" + shots.size());
@@ -98,6 +107,8 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
                 .subscribe(new Action1<List<Shot>>() {
                     @Override
                     public void call(List<Shot> shots) {
+                        LogUtils.e("shosts.size()------>>>>>" + shots.size());
+                        if (shots.size() == 0) realm_is_null = true;
                         getView().showShots(shots, 1);
                     }
                 }, new Action1<Throwable>() {
@@ -122,25 +133,24 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
     public void updataUserInfo() {
         userModel.getUseWithAccessToken(SPUtil.getAccessToken(APP.getInstance()))
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .map(new Func1<User, User>() {
                     @Override
                     public User call(User user) {
                         if (!UserUtil.enqual(user, mCurrentUser)) {
                             user.setAccessToken(mCurrentUser.getAccessToken());
+                            LogUtils.d("更新USER数据成功");
                             userModel.saveUserToReaml(user);
                             return user;
                         }
                         return null;
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<User>() {
                     @Override
                     public void call(User user) {
                         if (user != null) {
                             mCurrentUser = user;
-                            LogUtils.d("从网络上更新用户成功啦");
                             getView().uploadUserInfo(mCurrentUser);
                         }
                         return;
@@ -152,7 +162,6 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
                     }
                 });
     }
-
 
     public void requestDate() {
         loadShotsFromServer(page, per_page, false);
@@ -195,5 +204,9 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
 
     private void closeProgress() {
         getView().closeProgress();
+    }
+
+    public User getCurrentUser() {
+        return mCurrentUser;
     }
 }

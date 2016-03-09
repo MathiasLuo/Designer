@@ -28,7 +28,6 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
 
     ServiceAPI serviceAPI;
     private String accessToken;
-    private Realm mRealm;
     private UserModel mUserModel;
 
     @Override
@@ -38,9 +37,7 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
         mUserModel = UserModelImpl.getInstance();
     }
 
-
     public void getAccesToken(final String athuCode) {
-        getView().showLoading();
         mUserModel.Login2GetAccessToken(athuCode)
                 .flatMap(new Func1<String, Observable<User>>() {
                     @Override
@@ -63,7 +60,6 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
                 .subscribe(new Action1<User>() {
                     @Override
                     public void call(User user) {
-                        closeLoading();
                         getView().setResult(Activity.RESULT_OK);
                         getView().finish();
                     }
@@ -73,20 +69,5 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
                         LogUtils.e("又是在这里出现了问题呀----->" + throwable.toString());
                     }
                 });
-    }
-
-
-    public void showLoading() {
-        getView().showLoading();
-    }
-
-    public void closeLoading() {
-        getView().closeLoading();
-    }
-
-    @Override
-    public void onViewDestroy() {
-        super.onViewDestroy();
-
     }
 }

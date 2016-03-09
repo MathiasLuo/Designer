@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.mathiasluo.designer.R;
 
-public class ScrollingActivity extends AppCompatActivity {
+public class  ScrollingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

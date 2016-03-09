@@ -17,7 +17,7 @@
         android:layout_height="66dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:scaleType="centerCrop"
-        android:src="@mipmap/test2" />
+        android:src="@mipmap/avatar_default" />
 
     <TextView
         android:id="@+id/nav_header_name"
