@@ -1,4 +1,4 @@
-package com.mathiasluo.designer.view;
+package com.mathiasluo.designer.view.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

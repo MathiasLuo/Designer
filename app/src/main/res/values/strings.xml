@@ -21,4 +21,5 @@
     <string name="title_activity_login">登陆</string>
 
     <string name="login_failed">你还没有成功登陆哟！！！</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

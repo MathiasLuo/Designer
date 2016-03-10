@@ -16,7 +16,7 @@ import com.mathiasluo.designer.utils.LogUtils;
 import com.mathiasluo.designer.utils.SPUtil;
 import com.mathiasluo.designer.utils.ToastUtil;
 import com.mathiasluo.designer.utils.UserUtil;
-import com.mathiasluo.designer.view.ShotsActivity;
+import com.mathiasluo.designer.view.fragment.ShotsFragment;
 import com.mathiasluo.designer.view.widget.CircleImageView;
 
 import java.util.List;
@@ -30,7 +30,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by MathiasLuo on 2016/3/3.
  */
-public class ShotsPresenter extends BasePresenter<ShotsActivity> {
+public class ShotsPresenter extends BasePresenter<ShotsFragment> {
 
     private ShotModel shotModel;
     private UserModel userModel;
@@ -44,8 +44,6 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
     public void loadDataFromReaml() {
         userModel = UserModelImpl.getInstance();
         shotModel = ShotModelImpl.getInstance();
-        //开始应用就加载用户信息
-        showUserInfo();
         loadShotsFromRealm();
         requestNewDate();
     }
@@ -80,17 +78,15 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
                             shotModel.clearShotsToRealm();
                             shotModel.saveShotsToRealm(shots);
                             getView().showShots(shots, page);
-                            LogUtils.d("是在这个条件下保存的");
+                            mShot = shots.get(0);
                         } else if (realm_is_null) {
                             shotModel.saveShotsToRealm(shots);
                             getView().showShots(shots, page);
                             realm_is_null = false;
-                            LogUtils.d("为什么是在这个条件下保存的呀" );
+                            mShot = shots.get(0);
                         } else {
                             getView().showShots(shots, page);
-                            LogUtils.d("在这里展示了数据" + shots.size());
                         }
-                        mShot = shots.get(0);
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -107,7 +103,7 @@ public class ShotsPresenter extends BasePresenter<ShotsActivity> {
                 .subscribe(new Action1<List<Shot>>() {
                     @Override
                     public void call(List<Shot> shots) {
-                        LogUtils.e("shosts.size()------>>>>>" + shots.size());
+                        LogUtils.d("load form realm shosts.size()------>>>>>" + shots.size());
                         if (shots.size() == 0) realm_is_null = true;
                         getView().showShots(shots, 1);
                     }

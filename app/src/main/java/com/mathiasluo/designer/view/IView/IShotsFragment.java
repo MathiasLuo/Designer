@@ -7,9 +7,9 @@ import com.mathiasluo.designer.bean.User;
 import java.util.List;
 
 /**
- * Created by MathiasLuo on 2016/3/3.
+ * Created by MathiasLuo on 2016/3/10.
  */
-public interface IShotsActivity<T> {
+public interface IShotsFragment<T> {
 
     void showShots(List<T> list, int current_page);
 

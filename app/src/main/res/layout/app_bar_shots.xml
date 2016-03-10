@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    tools:context="com.mathiasluo.designer.view.ShotsActivity">
+  >
 
     <include layout="@layout/toolbar" />
 
-    <include layout="@layout/content_shots" />
+
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menu"
@@ -52,10 +51,6 @@
         fab:menu_shadowXOffset="1dp"
         fab:menu_shadowYOffset="3dp"
         fab:menu_showShadow="true">
-        <!--     fab:menu_labels_style="@style/YourCustomLabelsStyle"-->
-
-        <!-- fab:menu_fab_show_animation="@anim/my_show_animation"
-         fab:menu_fab_hide_animation="@anim/my_hide_animation"-->
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_item"

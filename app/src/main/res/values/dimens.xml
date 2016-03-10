@@ -10,4 +10,5 @@
 
 
     <dimen name="shot_image_maxheight">100dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

@@ -1,14 +1,15 @@
-package com.mathiasluo.designer.view;
+package com.mathiasluo.designer.view.activity;
 
 import android.os.Bundle;
 
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.mathiasluo.designer.presenter.BasePresenter;
+import com.mathiasluo.designer.view.activity.BaseActivity;
 
 /**
  * Created by MathiasLuo on 2016/3/4.
  */
-public abstract   class SwipBaseActivity<V, T extends BasePresenter<V>>extends BaseActivity {
+public abstract class SwipBaseActivity<V, T extends BasePresenter<V>> extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +31,5 @@ public abstract   class SwipBaseActivity<V, T extends BasePresenter<V>>extends B
         super.onDestroy();
         SwipeBackHelper.onDestroy(this);
     }
-
 
 }

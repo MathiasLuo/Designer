@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.mathiasluo.designer.view.LoginActivity">
+    tools:context=".view.activity.LoginActivity">
 
     <include layout="@layout/toolbar" />
 

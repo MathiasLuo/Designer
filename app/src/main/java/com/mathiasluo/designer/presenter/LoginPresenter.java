@@ -3,8 +3,6 @@ package com.mathiasluo.designer.presenter;
 import android.app.Activity;
 
 import com.mathiasluo.designer.app.APP;
-import com.mathiasluo.designer.bean.AccessToken;
-import com.mathiasluo.designer.bean.AuthBody;
 import com.mathiasluo.designer.bean.User;
 import com.mathiasluo.designer.model.IModel.UserModel;
 import com.mathiasluo.designer.model.UserModelImpl;
@@ -12,9 +10,8 @@ import com.mathiasluo.designer.model.service.ServiceAPI;
 import com.mathiasluo.designer.model.service.ServiceAPIModel;
 import com.mathiasluo.designer.utils.LogUtils;
 import com.mathiasluo.designer.utils.SPUtil;
-import com.mathiasluo.designer.view.LoginActivity;
+import com.mathiasluo.designer.view.activity.LoginActivity;
 
-import io.realm.Realm;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
