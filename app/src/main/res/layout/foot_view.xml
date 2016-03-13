@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="56dp">
 
-    <android.support.v4.widget.ContentLoadingProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-
-        android:layout_centerInParent="true" />
+    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        app:mlpb_progress_color="#566da9"
+        app:mlpb_progress_stoke_width="3dp" />
 
 </RelativeLayout>

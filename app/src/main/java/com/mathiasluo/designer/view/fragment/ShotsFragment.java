@@ -1,10 +1,8 @@
 package com.mathiasluo.designer.view.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,14 +12,12 @@ import android.view.ViewGroup;
 
 import com.mathiasluo.designer.R;
 import com.mathiasluo.designer.adpter.ShotAdapter;
-import com.mathiasluo.designer.app.APP;
 import com.mathiasluo.designer.bean.Shot;
 import com.mathiasluo.designer.bean.User;
 import com.mathiasluo.designer.presenter.ShotsPresenter;
 import com.mathiasluo.designer.view.IView.IMainActivity;
 import com.mathiasluo.designer.view.IView.IShotsFragment;
 import com.mathiasluo.designer.view.activity.MainActivity;
-import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.List;
 

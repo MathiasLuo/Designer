@@ -46,6 +46,8 @@ public class ShotsPresenter extends BasePresenter<ShotsFragment> {
         shotModel = ShotModelImpl.getInstance();
         loadShotsFromRealm();
         requestNewDate();
+
+
     }
 
     public void loadShotsFromServer(int page, int per_page, boolean isShow) {
@@ -68,10 +70,12 @@ public class ShotsPresenter extends BasePresenter<ShotsFragment> {
                     @Override
                     public void call(List<Shot> shots) {
                         closeProgress();
-                        LogUtils.d("这里一共有" + shots.size()
+                      /*  LogUtils.d("这里一共有" + shots.size()
                                 + "个数据\n" + "这里的page是：" + page
                                 + "\n这里的realm_is_null" + realm_is_null
-                                + "\n这里的isShow" + isShow);
+                                + "\n这里的isShow" + isShow
+                                + "\nmShot---->>>" + mShot.getId().toString()
+                                + "\nshot----->>>>>" + shots.get(0).getId().toString());*/
                         if (mShot != null && (mShot.getId().equals(shots.get(0).getId()) && isShow)) {
                             ToastUtil.Toast("已经是最新的数据了");
                         } else if (mShot != null && (!(mShot.getId().equals(shots.get(0).getId())) && isShow)) {
@@ -79,11 +83,13 @@ public class ShotsPresenter extends BasePresenter<ShotsFragment> {
                             shotModel.saveShotsToRealm(shots);
                             getView().showShots(shots, page);
                             mShot = shots.get(0);
+                            LogUtils.d("首页有更新重新保存数据");
                         } else if (realm_is_null) {
                             shotModel.saveShotsToRealm(shots);
                             getView().showShots(shots, page);
                             realm_is_null = false;
                             mShot = shots.get(0);
+                            LogUtils.d("第一次成功请求后保存数据");
                         } else {
                             getView().showShots(shots, page);
                         }
@@ -105,6 +111,7 @@ public class ShotsPresenter extends BasePresenter<ShotsFragment> {
                     public void call(List<Shot> shots) {
                         LogUtils.d("load form realm shosts.size()------>>>>>" + shots.size());
                         if (shots.size() == 0) realm_is_null = true;
+                        else mShot = shots.get(0);
                         getView().showShots(shots, 1);
                     }
                 }, new Action1<Throwable>() {

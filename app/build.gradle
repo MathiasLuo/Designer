@@ -26,6 +26,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 
@@ -37,6 +41,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.2.0'
     compile 'com.android.support:cardview-v7:23.2.0'
     compile 'com.github.clans:fab:1.6.2'
+    compile('com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE')
 
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'

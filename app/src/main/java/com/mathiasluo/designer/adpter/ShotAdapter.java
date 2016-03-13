@@ -1,8 +1,14 @@
 package com.mathiasluo.designer.adpter;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +24,9 @@ import com.mathiasluo.designer.app.APP;
 import com.mathiasluo.designer.bean.Shot;
 import com.mathiasluo.designer.model.ImageModelImpl;
 import com.mathiasluo.designer.utils.DensityUtil;
+import com.mathiasluo.designer.utils.LogUtils;
+import com.mathiasluo.designer.utils.MyActivityManager;
+import com.mathiasluo.designer.view.activity.ShotActivty;
 import com.mathiasluo.designer.view.widget.CircleImageView;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -110,6 +119,8 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
 
             ViewGroup.LayoutParams params = holder.shotImage.getLayoutParams();
             params.height = DensityUtil.dip2px(APP.getInstance(), shot.getHeight());
+
+
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             holder.shotImage.setLayoutParams(params);
 
@@ -118,6 +129,22 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
                 @Override
                 public void onResourceReady(Bitmap bitmap, GlideAnimation glideAnimation) {
                     holder.avatarImage.setImageBitmap(bitmap);
+                }
+            });
+
+
+            holder.shotImage.setOnClickListener(new View.OnClickListener() {
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onClick(View v) {
+                    Activity activity = MyActivityManager.getInstance().getCurentActivity();
+                    Intent intent = new Intent(activity, ShotActivty.class);
+
+                    ActivityOptions options
+                            = ActivityOptions
+                            .makeSceneTransitionAnimation(activity, holder.shotImage, "shotimage");
+                    activity.startActivity(intent, options.toBundle());
+
                 }
             });
         }
@@ -130,12 +157,13 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
 
 
     public void addMoreData(List<Shot> datas, int current_page) {
-        mDataList.addAll(datas);
+
         if (current_page == pre_page) {
             mDataList = datas;
-        }
-        notifyDataSetChanged();
+        } else
+            mDataList.addAll(datas);
 
+        notifyDataSetChanged();
     }
 
     /**
@@ -153,23 +181,14 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public static List<Shot> removeDuplicateDataInOrder(List<Shot> list) {
-        HashSet<Shot> hashSet = new HashSet<Shot>();
-        List<Shot> newlist = new ArrayList<Shot>();
-        for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
-            Shot element = (Shot) iterator.next();
-            if (hashSet.add(element)) {
-                newlist.add(element);
-            }
+    public static List<Shot> removeDuplicateDataInOrder(List<Shot> newList, List<Shot> oldList) {
+        for (int i = 0; i < 10; i++) {
+            oldList.add(i, newList.get(i));
         }
-        list.clear();
-        list.addAll(newlist);
-        // Collections.reverse(list);
-        return list;
+        return oldList;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-
 
         boolean ISLIKE = false;
 
@@ -179,8 +198,6 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
         CircleImageView avatarImage;
         @Bind(R.id.username_text)
         TextView usernameText;
-        /* @Bind(R.id.viewsCount_text)
-         TextView viewsCountText;*/
         @Bind(R.id.commentsCount_text)
         TextView commentsCountText;
         @Bind(R.id.likeCount_text)

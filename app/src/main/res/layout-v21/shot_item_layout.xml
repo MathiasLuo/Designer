@@ -11,15 +11,16 @@
         android:orientation="vertical">
 
         <ImageView
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:id="@+id/shot_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@mipmap/avatar_default"
-            android:transitionName="shotimage" />
+            android:src="@mipmap/avatar_default" />
 
         <RelativeLayout
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:id="@+id/rel_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,8 +32,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:scaleType="fitCenter"
+                android:layout_marginRight="8dp"
                 android:src="@mipmap/avatar_default" />
 
             <TextView
@@ -63,6 +64,7 @@
             android:background="@color/decortint" />
 
         <LinearLayout
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:id="@+id/lin_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,6 +99,7 @@
 
 
         <LinearLayout
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:id="@+id/lin_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -135,6 +138,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -166,6 +170,7 @@
                 android:background="@color/decortint" />
 
             <LinearLayout
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

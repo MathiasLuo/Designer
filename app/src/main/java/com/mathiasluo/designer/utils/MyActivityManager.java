@@ -21,7 +21,6 @@ public class MyActivityManager {
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                setCurrentActivity(activity);
             }
 
             @Override
@@ -31,7 +30,7 @@ public class MyActivityManager {
 
             @Override
             public void onActivityResumed(Activity activity) {
-
+                setCurrentActivity(activity);
             }
 
             @Override
@@ -64,6 +63,7 @@ public class MyActivityManager {
     private final static class ActivityManangerHiolder {
         private final static MyActivityManager instance = new MyActivityManager();
     }
+
 
 
     public Activity getCurentActivity() {
