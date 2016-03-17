@@ -3,6 +3,7 @@ package com.mathiasluo.designer.model;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.mathiasluo.designer.R;
@@ -35,6 +36,7 @@ public class ImageModelImpl implements ImageModel {
     public void loadImage(String url, ImageView imageView) {
         Glide.with(APP.getInstance())
                 .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.drawable.img_on_laoding)
                 .error(R.drawable.img_on_laoding)
                 .crossFade()

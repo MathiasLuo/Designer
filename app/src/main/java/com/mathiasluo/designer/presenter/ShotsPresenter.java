@@ -1,6 +1,7 @@
 package com.mathiasluo.designer.presenter;
 
 import android.graphics.Bitmap;
+import android.widget.ImageView;
 
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -211,5 +212,9 @@ public class ShotsPresenter extends BasePresenter<ShotsFragment> {
 
     public User getCurrentUser() {
         return mCurrentUser;
+    }
+
+    public void loadImageWithurl(String url, ImageView imageView) {
+        ImageModelImpl.getInstance().loadImage(url, imageView);
     }
 }

@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,28 +54,31 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
     //上拉加载更多状态-默认为0
     private int load_more_status = 0;
 
-    private List<Shot> mDataList;
+    public static List<Shot> mDataList;
 
     private int pre_page = 1;
 
-    public ShotAdapter(List<Shot> mDataList) {
+    private Activity activity;
+
+
+    public ShotAdapter(List<Shot> mDataList, Activity activity) {
         this.mDataList = mDataList;
+        this.activity = activity;
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view;
         if (viewType == TYPE_ITEM) {
-            View view = inflater.inflate(R.layout.shot_item_layout, parent, false);
+            view = inflater.inflate(R.layout.shot_item_layout, parent, false);
             view.setTag(TYPE_ITEM);
-            return new ViewHolder(view);
         } else {
-            View view = inflater.inflate(R.layout.foot_view, parent, false);
+            view = inflater.inflate(R.layout.foot_view, parent, false);
             view.setTag(TYPE_FOOTER);
-            return new ViewHolder(view);
-
         }
+        return new ViewHolder(view);
     }
 
 
@@ -90,6 +94,7 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
 
         if (position < mDataList.size()) {
             Shot shot = mDataList.get(position);
@@ -119,10 +124,9 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
 
             ViewGroup.LayoutParams params = holder.shotImage.getLayoutParams();
             params.height = DensityUtil.dip2px(APP.getInstance(), shot.getHeight());
-
-
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             holder.shotImage.setLayoutParams(params);
+
 
             ImageModelImpl.getInstance().loadImage(shot.getImages().getNormal(), holder.shotImage);
             ImageModelImpl.getInstance().loadImageWithTargetView(shot.getUser().getAvatarUrl(), new SimpleTarget<Bitmap>() {
@@ -132,21 +136,22 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
                 }
             });
 
-
             holder.shotImage.setOnClickListener(new View.OnClickListener() {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View v) {
-                    Activity activity = MyActivityManager.getInstance().getCurentActivity();
                     Intent intent = new Intent(activity, ShotActivty.class);
-
-                    ActivityOptions options
-                            = ActivityOptions
-                            .makeSceneTransitionAnimation(activity, holder.shotImage, "shotimage");
-                    activity.startActivity(intent, options.toBundle());
-
+                    intent.putExtra("position", position);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        ActivityOptions options = ActivityOptions
+                                .makeSceneTransitionAnimation(activity, holder.shotImage, "shotImage");
+                        activity.startActivity(intent, options.toBundle());
+                    } else {
+                        activity.startActivity(intent);
+                    }
                 }
             });
+
         }
     }
 
@@ -209,6 +214,7 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
             super(view);
             if ((int) view.getTag() == TYPE_ITEM)
                 ButterKnife.bind(this, view);
+
         }
     }
 

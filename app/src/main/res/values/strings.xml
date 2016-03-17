@@ -15,6 +15,9 @@
     <string name="open">打开</string>
     <string name="close">关闭</string>
 
+    <string name="share">分享</string>
+    <string name="setting">设置</string>
+
 
     <string name="nav_header_name">点击头像登录</string>
     <string name="nav_header_describe">登陆后更加精彩,你懂得...</string>

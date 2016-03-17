@@ -25,7 +25,8 @@
         </activity>
         <activity
             android:name=".view.activity.ShotActivty"
-            android:label="@string/title_activity_shot_activty"></activity>
+            android:label="@string/title_activity_shot_activty"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

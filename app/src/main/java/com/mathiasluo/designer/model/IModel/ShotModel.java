@@ -21,5 +21,4 @@ public interface ShotModel {
 
     void clearShotsToRealm();
 
-
 }

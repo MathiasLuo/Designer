@@ -22,4 +22,6 @@ public interface UserModel {
     Observable<User> setCurrentUser(User user);
 
     void saveUserToReaml(User user);
+
+    Observable<User> getOtherUser(String username);
 }

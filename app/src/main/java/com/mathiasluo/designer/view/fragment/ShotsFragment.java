@@ -86,7 +86,7 @@ public class ShotsFragment extends BaseFragment<ShotsFragment, ShotsPresenter> i
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisableItem + 1 == mShotAdapter.getItemCount()) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisableItem - 1 == mShotAdapter.getItemCount()) {
                     mPresenter.requestDate();
                 }
             }
@@ -97,7 +97,7 @@ public class ShotsFragment extends BaseFragment<ShotsFragment, ShotsPresenter> i
     public void showShots(List<Shot> list, int current_page) {
         if (dataList == null) {
             dataList = list;
-            mShotAdapter = new ShotAdapter(list);
+            mShotAdapter = new ShotAdapter(list, getActivity());
             mRecyclerView.setAdapter(mShotAdapter);
         } else {
             mShotAdapter.addMoreData(list, current_page);

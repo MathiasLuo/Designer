@@ -8,6 +8,7 @@ import com.mathiasluo.designer.bean.User;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -36,13 +37,11 @@ public interface ServiceAPI {
     Observable<AccessToken> getAccessToken(@Body AuthBody body);
 
 
-
     @GET("user")
     Observable<User> getUserWithAccessToken(@Query("access_token") String accessToken);
 
 
-
-
-
+    @GET("users/{username}")
+    Observable<User> getUserInfo(@Path("username") String username);
 
 }

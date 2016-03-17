@@ -117,4 +117,9 @@ public class UserModelImpl implements UserModel {
         mRealm.commitTransaction();
         mRealm.close();
     }
+
+    @Override
+    public Observable<User> getOtherUser(String username) {
+        return mServiceAPI.getUserInfo(username);
+    }
 }

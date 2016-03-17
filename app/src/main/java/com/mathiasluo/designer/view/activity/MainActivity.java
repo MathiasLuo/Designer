@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -44,6 +46,7 @@ public class MainActivity extends BaseActivity<MainActivity, MainActivityPresent
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         init();
@@ -51,7 +54,7 @@ public class MainActivity extends BaseActivity<MainActivity, MainActivityPresent
         setShotsFragment(new ShotsFragment());
     }
 
-    private void setShotsFragment(Fragment fragment) {
+    private void setShotsFragment(ShotsFragment fragment) {
         android.support.v4.app.FragmentTransaction transaction = mFragmentManager.beginTransaction();
         transaction.replace(R.id.main_frameLayout, fragment);
         transaction.commit();
@@ -112,5 +115,9 @@ public class MainActivity extends BaseActivity<MainActivity, MainActivityPresent
         mDrawerLayout.addDrawerListener(new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close));
     }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 }
