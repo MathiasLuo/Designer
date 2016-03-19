@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.mathiasluo.designer.R;
 import com.mathiasluo.designer.app.APP;
@@ -48,6 +49,18 @@ public class ImageModelImpl implements ImageModel {
         Glide.with(APP.getInstance())
                 .load(url)
                 .asBitmap()
+
+              /*  .placeholder(R.drawable.img_on_laoding)
+                .error(R.drawable.img_on_laoding)*/
+                .into(simpleTarget);
+    }
+
+    @Override
+    public void loadImageWithListener(String url, SimpleTarget simpleTarget, RequestListener listener) {
+        Glide.with(APP.getInstance())
+                .load(url)
+                .asBitmap()
+                .listener(listener)
               /*  .placeholder(R.drawable.img_on_laoding)
                 .error(R.drawable.img_on_laoding)*/
                 .into(simpleTarget);

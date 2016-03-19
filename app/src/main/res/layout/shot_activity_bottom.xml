@@ -18,30 +18,37 @@
         android:paddingTop="8dp">
 
 
-        <com.mathiasluo.designer.view.widget.CircleImageView
-            android:id="@+id/user_avatar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:scaleType="fitCenter"
-            android:src="@mipmap/avatar_default" />
-
-        <TextView
-            android:id="@+id/username_text"
+        <LinearLayout
+            android:id="@+id/lay_header_img"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/linearLayout"
-            android:layout_toRightOf="@id/user_avatar"
-            android:text="@{shot.user.name}"
-            android:textColor="@color/white"
-            android:textSize="14dp" />
+            android:layout_height="wrap_content">
 
+            <com.mathiasluo.designer.view.widget.CircleImageView
+                android:id="@+id/user_avatar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/avatar_default" />
+
+            <TextView
+                android:id="@+id/username_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@id/user_avatar"
+                android:text="@{shot.user.name}"
+                android:textColor="@color/white"
+                android:textSize="14dp" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@id/lay_header_img"
             android:layout_alignParentRight="true"
             android:orientation="horizontal">
 
@@ -70,7 +77,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginRight="16dp"
-                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
                 app:ico_color="@color/colorAccent"
                 app:ico_icon="gmi_favorite_outline" />
         </LinearLayout>
@@ -78,7 +85,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/user_avatar"
+            android:layout_below="@id/lay_header_img"
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
@@ -97,10 +104,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="8dp"
+                android:layout_marginRight="4dp"
                 android:text="@{shot.likesCount.toString()}"
                 android:textSize="14dp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="4dp"
+                android:text="个人喜欢这个照片"
+                android:textSize="14dp" />
         </LinearLayout>
 
 

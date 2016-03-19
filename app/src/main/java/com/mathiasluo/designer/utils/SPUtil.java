@@ -2,6 +2,7 @@ package com.mathiasluo.designer.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 /**
  * Created by MathiasLuo on 2016/3/5.

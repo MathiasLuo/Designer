@@ -27,6 +27,7 @@ import com.mathiasluo.designer.model.ImageModelImpl;
 import com.mathiasluo.designer.utils.DensityUtil;
 import com.mathiasluo.designer.utils.LogUtils;
 import com.mathiasluo.designer.utils.MyActivityManager;
+import com.mathiasluo.designer.view.activity.Shot2Activity;
 import com.mathiasluo.designer.view.activity.ShotActivty;
 import com.mathiasluo.designer.view.widget.CircleImageView;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -140,7 +141,7 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(activity, ShotActivty.class);
+                    Intent intent = new Intent(activity, Shot2Activity.class);
                     intent.putExtra("position", position);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ActivityOptions options = ActivityOptions

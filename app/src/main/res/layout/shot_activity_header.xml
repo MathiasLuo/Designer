@@ -40,7 +40,7 @@
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="16dp"
             app:ico_color="@color/white"
             app:ico_icon="gmi_share" />
     </RelativeLayout>

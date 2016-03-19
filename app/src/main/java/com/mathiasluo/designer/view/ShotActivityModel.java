@@ -18,19 +18,21 @@ public class ShotActivityModel {
     ShotModel shotModel;
     ImageModel imageModel;
     int mCurrentPosition;
+    Shot mCurrentShot;
 
     public ShotActivityModel(ActivityShotActivtyBinding binding, int mCurrentPosition) {
         shotModel = ShotModelImpl.getInstance();
         imageModel = ImageModelImpl.getInstance();
-
         this.binding = binding;
         this.mCurrentPosition = mCurrentPosition;
         init();
     }
 
     private void init() {
-        imageModel.loadImage(ShotAdapter.mDataList.get(mCurrentPosition).getImages().getNormal(), binding.image);
-        binding.setShot(ShotAdapter.mDataList.get(mCurrentPosition));
+        mCurrentShot = ShotAdapter.mDataList.get(mCurrentPosition);
+        imageModel.loadImage(mCurrentShot.getImages().getNormal(), binding.image);
+        binding.setShot(mCurrentShot);
+
     }
 
 
