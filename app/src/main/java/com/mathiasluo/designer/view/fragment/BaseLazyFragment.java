@@ -3,6 +3,9 @@ package com.mathiasluo.designer.view.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.mathiasluo.designer.bean.Shot;
+import com.mathiasluo.designer.utils.LogUtils;
+
 
 abstract class BaseLazyFragment extends Fragment {
     private static final String TAG = BaseLazyFragment.class.getSimpleName();
@@ -71,7 +74,11 @@ abstract class BaseLazyFragment extends Fragment {
     }
 
     public void showProgress() {
+        LogUtils.e("在showProgress中哟");
+    }
 
+    public void closeProgress() {
+        LogUtils.e("在closeProgress中哟");
     }
 
     /**
@@ -95,4 +102,6 @@ abstract class BaseLazyFragment extends Fragment {
     abstract void onUserInvisible();
 
     abstract void setData();
+
+    public abstract void setData(Shot shot);
 }

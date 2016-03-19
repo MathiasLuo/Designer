@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 
 import com.mathiasluo.designer.R;
 import com.mathiasluo.designer.adpter.ShotAdapter;
+import com.mathiasluo.designer.adpter.ViewPagerAdapter;
 import com.mathiasluo.designer.bean.Shot;
 import com.mathiasluo.designer.bean.User;
 import com.mathiasluo.designer.presenter.ShotsPresenter;
+import com.mathiasluo.designer.utils.LogUtils;
 import com.mathiasluo.designer.view.IView.IMainActivity;
 import com.mathiasluo.designer.view.IView.IShotsFragment;
 import com.mathiasluo.designer.view.activity.MainActivity;
@@ -86,7 +88,8 @@ public class ShotsFragment extends BaseFragment<ShotsFragment, ShotsPresenter> i
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisableItem - 1 == mShotAdapter.getItemCount()) {
+                LogUtils.e("lastVisableItem=" + lastVisableItem + "\n" + "mShotAdapter.mDataList.size()=" + mShotAdapter.mDataList.size());
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisableItem == mShotAdapter.mDataList.size()) {
                     mPresenter.requestDate();
                 }
             }
@@ -123,5 +126,16 @@ public class ShotsFragment extends BaseFragment<ShotsFragment, ShotsPresenter> i
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (ShotAdapter.mDataList != null && ViewPagerAdapter.mCurrentPosition != -1) {
+            mShotAdapter.notifyDataSetChanged();
+            mRecyclerView.scrollToPosition(ViewPagerAdapter.mCurrentPosition);
+        }
+
     }
 }

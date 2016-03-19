@@ -36,9 +36,8 @@ public class ShotsPresenter extends BasePresenter<ShotsFragment> {
     private ShotModel shotModel;
     private UserModel userModel;
     private static User mCurrentUser = null;
-    int page = 2;
+    public static int page = 2;
     int per_page = 10;
-
     Shot mShot;
     boolean realm_is_null = false;
 
@@ -92,6 +91,7 @@ public class ShotsPresenter extends BasePresenter<ShotsFragment> {
                             mShot = shots.get(0);
                             LogUtils.d("第一次成功请求后保存数据");
                         } else {
+                            LogUtils.e("按道理来说不可能到这里来呀------_--");
                             getView().showShots(shots, page);
                         }
                     }
@@ -168,6 +168,7 @@ public class ShotsPresenter extends BasePresenter<ShotsFragment> {
     }
 
     public void requestDate() {
+        LogUtils.e("上拉加载数据中...");
         loadShotsFromServer(page, per_page, false);
         page++;
     }

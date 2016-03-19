@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
 import com.mathiasluo.designer.R;
-import com.mathiasluo.designer.adpter.ShotAdapter;
 import com.mathiasluo.designer.adpter.ViewPagerAdapter;
 import com.mikepenz.iconics.context.IconicsContextWrapper;
 
@@ -30,9 +29,10 @@ public class Shot2Activity extends AppCompatActivity {
 
     private void init() {
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
-        mAdapter = new ViewPagerAdapter(getSupportFragmentManager(),mViewPager);
-        mAdapter.adddatasAndPosition(ShotAdapter.mDataList, mCurrentPosition);
+        mAdapter = new ViewPagerAdapter(getSupportFragmentManager(), mViewPager);
+        mAdapter.adddatasAndPosition( mCurrentPosition);
         mViewPager.setAdapter(mAdapter);
+        mViewPager.setCurrentItem(mCurrentPosition);
     }
 
 

@@ -96,7 +96,6 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-
         if (position < mDataList.size()) {
             Shot shot = mDataList.get(position);
             holder.commentsCountText.setText(shot.getCommentsCount().toString());
@@ -185,6 +184,7 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
     public void changeMoreStatus(int status) {
         load_more_status = status;
         notifyDataSetChanged();
+
     }
 
     public static List<Shot> removeDuplicateDataInOrder(List<Shot> newList, List<Shot> oldList) {
