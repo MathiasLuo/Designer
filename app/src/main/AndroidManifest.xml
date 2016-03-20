@@ -25,11 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activity.ShotActivty"
-            android:label="@string/title_activity_shot_activty"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.activity.Shot2Activity"
+            android:name=".view.activity.ShotActivity"
             android:launchMode="singleTop"
             android:label="@string/title_activity_shot2"
             android:theme="@style/AppTheme.NoActionBar"></activity>

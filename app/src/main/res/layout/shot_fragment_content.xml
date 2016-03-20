@@ -1,0 +1,61 @@
+<layout xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="shot"
+            type="com.mathiasluo.designer.bean.Shot" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".view.activity.ShotActivity$PlaceholderFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
+
+
+            <ProgressBar
+                android:id="@+id/fragment_progressBar"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true" />
+
+            <include
+                android:id="@+id/head_content"
+                layout="@layout/content_shot_header"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="6dp"
+                android:fitsSystemWindows="true"
+                bind:shot="@{shot}" />
+
+            <ImageView
+                android:id="@+id/image_shot"
+                android:layout_width="match_parent"
+                android:layout_height="825px"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:transitionName="shotImage" />
+
+            <include
+                android:id="@+id/bottom_content"
+                layout="@layout/content_shot_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                bind:shot="@{shot}" />
+        </RelativeLayout>
+
+        <include layout="@layout/shot_fragment_viewpager" />
+
+    </LinearLayout>
+</layout>

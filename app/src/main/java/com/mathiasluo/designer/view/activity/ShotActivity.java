@@ -11,7 +11,7 @@ import com.mathiasluo.designer.R;
 import com.mathiasluo.designer.adpter.ViewPagerAdapter;
 import com.mikepenz.iconics.context.IconicsContextWrapper;
 
-public class Shot2Activity extends AppCompatActivity {
+public class ShotActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private ViewPagerAdapter mAdapter;
@@ -21,7 +21,7 @@ public class Shot2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_shot2);
+        setContentView(R.layout.activity_shot);
         mViewPager = (ViewPager) findViewById(R.id.container);
         mCurrentPosition = getIntent().getIntExtra("position", 1);
         init();

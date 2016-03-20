@@ -2,14 +2,11 @@ package com.mathiasluo.designer.adpter;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.mathiasluo.designer.R;
@@ -25,18 +21,10 @@ import com.mathiasluo.designer.app.APP;
 import com.mathiasluo.designer.bean.Shot;
 import com.mathiasluo.designer.model.ImageModelImpl;
 import com.mathiasluo.designer.utils.DensityUtil;
-import com.mathiasluo.designer.utils.LogUtils;
-import com.mathiasluo.designer.utils.MyActivityManager;
-import com.mathiasluo.designer.view.activity.Shot2Activity;
-import com.mathiasluo.designer.view.activity.ShotActivty;
+import com.mathiasluo.designer.view.activity.ShotActivity;
 import com.mathiasluo.designer.view.widget.CircleImageView;
 import com.mikepenz.iconics.IconicsDrawable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -73,10 +61,10 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view;
         if (viewType == TYPE_ITEM) {
-            view = inflater.inflate(R.layout.shot_item_layout, parent, false);
+            view = inflater.inflate(R.layout.recycle_shot_item, parent, false);
             view.setTag(TYPE_ITEM);
         } else {
-            view = inflater.inflate(R.layout.foot_view, parent, false);
+            view = inflater.inflate(R.layout.recycle_foot_view, parent, false);
             view.setTag(TYPE_FOOTER);
         }
         return new ViewHolder(view);
@@ -140,7 +128,7 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(activity, Shot2Activity.class);
+                    Intent intent = new Intent(activity, ShotActivity.class);
                     intent.putExtra("position", position);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ActivityOptions options = ActivityOptions

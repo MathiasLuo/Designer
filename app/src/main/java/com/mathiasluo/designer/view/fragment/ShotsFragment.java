@@ -55,7 +55,7 @@ public class ShotsFragment extends BaseFragment<ShotsFragment, ShotsPresenter> i
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.content_shots, container, false);
+        View rootView = inflater.inflate(R.layout.main_fragment_content_shots, container, false);
         ButterKnife.bind(this, rootView);
         return rootView;
     }

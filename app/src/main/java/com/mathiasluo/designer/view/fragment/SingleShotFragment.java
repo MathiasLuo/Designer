@@ -9,18 +9,18 @@ import android.view.ViewGroup;
 
 import com.mathiasluo.designer.R;
 import com.mathiasluo.designer.bean.Shot;
-import com.mathiasluo.designer.databinding.ActivityShotActivtyBinding;
+import com.mathiasluo.designer.databinding.ContentShotBinding;
 import com.mathiasluo.designer.model.ImageModelImpl;
 import com.mathiasluo.designer.utils.LogUtils;
 
 /**
  * Created by MathiasLuo on 2016/3/18.
  */
-public class SingleShotFragment extends BaseLazyFragment {
+public class SingleShotFragment extends BaseLazyFragment implements View.OnClickListener {
 
 
     private Shot shot;
-    private ActivityShotActivtyBinding binding;
+    private ContentShotBinding binding;
     private boolean isVisible;
 
     public SingleShotFragment(Shot shot) {
@@ -34,14 +34,19 @@ public class SingleShotFragment extends BaseLazyFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_shot_activty, container, false);
+        View view = inflater.inflate(R.layout.content_shot, container, false);
         binding = DataBindingUtil.bind(view);
+        init();
         return view;
+    }
+
+    private void init() {
+        binding.headContent.imgShare.setOnClickListener(this);
+        binding.headContent.imgBack.setOnClickListener(this);
     }
 
     @Override
     void onFirstUserVisible() {
-
         if (shot != null)
             setData();
     }
@@ -57,7 +62,7 @@ public class SingleShotFragment extends BaseLazyFragment {
 
     private void bindData() {
         binding.setShot(shot);
-        ImageModelImpl.getInstance().loadImage(shot.getImages().getNormal(), binding.image);
+        ImageModelImpl.getInstance().loadImage(shot.getImages().getNormal(), binding.imageShot);
         isVisible = true;
         closeProgress();
     }
@@ -78,29 +83,41 @@ public class SingleShotFragment extends BaseLazyFragment {
         isVisible = false;
     }
 
-
     @Override
     void onUserVisible() {
     }
 
-
     @Override
     void onFirstUserInvisible() {
-
     }
 
     @Override
     void onUserInvisible() {
-
     }
 
     @Override
     public void showProgress() {
         super.showProgress();
+        binding.fragmentProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void closeProgress() {
         super.closeProgress();
+        binding.fragmentProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.img_back:
+                getActivity().finish();
+                break;
+            case R.id.img_share:
+                break;
+            case R.id.img_shot_favorite:
+                break;
+        }
+
     }
 }
