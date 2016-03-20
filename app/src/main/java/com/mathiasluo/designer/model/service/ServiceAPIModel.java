@@ -27,15 +27,20 @@ public class ServiceAPIModel {
         return retrofit.create(ServiceAPI.class);
     }
 
-    public final static OkHttpClient provideOkHttpClient() {
+    public final static OkHttpClient.Builder initOhHttp() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(interceptor)
-                .addInterceptor(new HeaderInterceptors())
-                .build();
-        return client;
+        return new OkHttpClient.Builder().addInterceptor(interceptor);
     }
+
+    public final static OkHttpClient provideOkHttpClient() {
+        return initOhHttp().addInterceptor(new HeaderInterceptors()).build();
+    }
+
+    public final static OkHttpClient provideOkHttpClient(String Authorization) {
+        return initOhHttp().addInterceptor(new HeaderInterceptors(Authorization)).build();
+    }
+
 
     public final static Gson provideGson() {
         Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
@@ -43,7 +48,6 @@ public class ServiceAPIModel {
             public boolean shouldSkipField(FieldAttributes f) {
                 return f.getDeclaringClass().equals(RealmObject.class);
             }
-
             @Override
             public boolean shouldSkipClass(Class<?> clazz) {
                 return false;
@@ -52,4 +56,6 @@ public class ServiceAPIModel {
         return gson;
 
     }
+
+
 }

@@ -11,6 +11,7 @@ public class ToastUtil {
         Toast(string, Toast.LENGTH_SHORT);
     }
 
+
     public final static void Toast(String string, int dur) {
         Toast.makeText(MyActivityManager.getInstance().getCurentActivity(), string, dur).show();
     }

@@ -132,6 +132,7 @@ public class ShotsFragment extends BaseFragment<ShotsFragment, ShotsPresenter> i
     @Override
     public void onResume() {
         super.onResume();
+        LogUtils.e("FragmentShots----->>> onResume");
         if (ShotAdapter.mDataList != null && ViewPagerAdapter.mCurrentPosition != -1) {
             mShotAdapter.notifyDataSetChanged();
             mRecyclerView.scrollToPosition(ViewPagerAdapter.mCurrentPosition);

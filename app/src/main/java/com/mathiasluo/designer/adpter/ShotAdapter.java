@@ -130,6 +130,9 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
                 public void onClick(View v) {
                     Intent intent = new Intent(activity, ShotActivity.class);
                     intent.putExtra("position", position);
+                    activity.startActivity(intent);
+                    /*
+                    想了半天，还是觉得不要这个动画...
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ActivityOptions options = ActivityOptions
                                 .makeSceneTransitionAnimation(activity, holder.shotImage, "shotImage");
@@ -137,6 +140,7 @@ public class ShotAdapter extends RecyclerView.Adapter<ShotAdapter.ViewHolder> {
                     } else {
                         activity.startActivity(intent);
                     }
+                    */
                 }
             });
 

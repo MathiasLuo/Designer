@@ -51,13 +51,13 @@ public class LoginActivity extends SwipBaseActivity<LoginActivity, LoginPresente
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(new IconicsDrawable(this).icon("gmi_arrow_back").sizeDp(16).color(Color.WHITE));
         mToolbar.setNavigationOnClickListener(v -> {
-            Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
+            ToastUtil.Toast(getString(R.string.login_failed));
             setResult(RESULT_CANCELED);
             LoginActivity.this.finish();
         });
+
         webView.getWebView().setWebViewClient(new WebViewClient() {
             String authCode;
-
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;

@@ -71,7 +71,6 @@ public class SingleShotFragment extends BaseLazyFragment implements View.OnClick
     @Override
     public void setData(Shot shot) {
         this.shot = shot;
-        LogUtils.e("我就想知道这里的binding是不是空的----->>>>" + (binding == null));
         if (binding != null) {
             bindData();
         }

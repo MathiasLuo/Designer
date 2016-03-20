@@ -17,7 +17,7 @@ public class OAuthUrl {
     }
 
     public final static String getOAuthLoginUrl(String clientId, String state) {
-        return getOAuthLoginUrl(clientId, "", "upload", state);
+        return getOAuthLoginUrl(clientId, "", "upload+write", state);
     }
 
     public final static String getOAuthLoginUrl(String clientId) {

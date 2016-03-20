@@ -44,4 +44,16 @@ public interface ServiceAPI {
     @GET("users/{username}")
     Observable<User> getUserInfo(@Path("username") String username);
 
+
+    @GET("shots/{shot_id}/likes")
+    Observable<User> getShotLikes(@Path("shot_id") String shot_id);
+
+    @GET("shots/{shot_id}/likes")
+    Observable cheakIsLikeShot(@Path("shot_id") String shot_id);
+
+    @POST("shots/{shot_id}/likes")
+    Observable likeShot(@Path("shot_id") String shot_id);
+
+
+
 }

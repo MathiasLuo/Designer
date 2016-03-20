@@ -122,4 +122,6 @@ public class UserModelImpl implements UserModel {
     public Observable<User> getOtherUser(String username) {
         return mServiceAPI.getUserInfo(username);
     }
+
+
 }

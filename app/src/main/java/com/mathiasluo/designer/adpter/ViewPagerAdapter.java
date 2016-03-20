@@ -32,9 +32,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter implements ViewP
 
     public void addFragment(SingleShotFragment fragment) {
         fragments.add(fragment);
+        notifyDataSetChanged();
     }
 
-    public void adddatasAndPosition(int position) {
+    public void addDatasAndPosition(int position) {
         this.mCurrentPosition = position;
         for (Shot shot : ShotAdapter.mDataList) {
             fragments.add(new SingleShotFragment(shot));
@@ -42,7 +43,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter implements ViewP
         notifyDataSetChanged();
     }
 
-    public void adddatasAndPosition(int position, List<Shot> datas) {
+    public void addDatasAndPosition(int position, List<Shot> datas) {
         this.mCurrentPosition = position;
         int index = fragments.size() - 1;
         for (int i = datas.size(); i > 0; i--) {
@@ -51,7 +52,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter implements ViewP
         }
     }
 
-    public void adddatasAndPosition(int position, int count) {
+    public void addDatasAndPosition(int position, int count) {
         this.mCurrentPosition = position;
         for (int i = 0; i < count; i++) {
             fragments.add(new SingleShotFragment());
@@ -74,7 +75,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter implements ViewP
         mCurrentPosition = position;
         if (position == fragments.size() - 1) {
             //这里更新数据了
-            adddatasAndPosition(position, 10);
+            addDatasAndPosition(position, 10);
             ShotModelImpl.getInstance()
                     .getShotsFromServer(ShotsPresenter.page, 10)
                     .subscribeOn(Schedulers.newThread())
@@ -82,7 +83,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter implements ViewP
                     .subscribe(new Action1<List<Shot>>() {
                         @Override
                         public void call(List<Shot> shots) {
-                            adddatasAndPosition(position, shots);
+                            addDatasAndPosition(position, shots);
                             ShotAdapter.mDataList.addAll(shots);
                             ++ShotsPresenter.page;
                         }

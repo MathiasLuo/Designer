@@ -30,7 +30,7 @@ public class ShotActivity extends AppCompatActivity {
     private void init() {
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager(), mViewPager);
-        mAdapter.adddatasAndPosition( mCurrentPosition);
+        mAdapter.addDatasAndPosition( mCurrentPosition);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setCurrentItem(mCurrentPosition);
     }

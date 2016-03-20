@@ -74,11 +74,10 @@ abstract class BaseLazyFragment extends Fragment {
     }
 
     public void showProgress() {
-        LogUtils.e("在showProgress中哟");
     }
 
     public void closeProgress() {
-        LogUtils.e("在closeProgress中哟");
+
     }
 
     /**
