@@ -1,10 +1,3 @@
-好久没有写文章了，主要是最近在看几本书和写了点练手项目，所有有所拖沓。
-
-练手的也开源了。主要是基于[Dribbble](https://dribbble.com/)的api一个图片的app。
-
-项目地址：https://github.com/MathiasLuo/Designer
-
-小的在这跪求[star](https://github.com/MathiasLuo/Designer)
 
 ###app截图###
 ![
@@ -24,6 +17,3 @@
   7. [realm-java](https://github.com/realm/realm-java)数据缓存为移动而生
   8. [*logger*](https://github.com/orhanobut/logger)让你的log更加漂亮
 
-###最后###
-
-最近还有好多事，所有Designer还有好多功能都没写完。不过还是厚颜的求[star](https://github.com/MathiasLuo/Designer)了。
