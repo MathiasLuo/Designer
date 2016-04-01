@@ -3,7 +3,6 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="shot"
             type="com.mathiasluo.designer.bean.Shot" />

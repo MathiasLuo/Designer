@@ -97,7 +97,6 @@ public class UserModelImpl implements UserModel {
 
     @Override
     public Observable<User> setCurrentUser(User user) {
-
         return Observable.just(user)
                 .map(new Func1<User, User>() {
                     @Override

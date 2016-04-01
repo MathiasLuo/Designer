@@ -4,11 +4,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
 import com.mathiasluo.designer.presenter.BasePresenter;
 import com.mikepenz.iconics.context.IconicsContextWrapper;
+import com.mikepenz.iconics.context.IconicsLayoutInflater;
 
 /**
  * Created by MathiasLuo on 2016/3/2.
@@ -20,6 +22,7 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         mPresenter = creatPresenter();
         mHandler = new Handler();

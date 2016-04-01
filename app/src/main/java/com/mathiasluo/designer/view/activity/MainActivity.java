@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -18,22 +19,31 @@ import com.mathiasluo.designer.R;
 import com.mathiasluo.designer.bean.User;
 import com.mathiasluo.designer.presenter.MainActivityPresenter;
 import com.mathiasluo.designer.utils.LogUtils;
+import com.mathiasluo.designer.utils.ToastUtil;
 import com.mathiasluo.designer.view.IView.IMainActivity;
+import com.mathiasluo.designer.view.fragment.PersonFragment;
 import com.mathiasluo.designer.view.fragment.ShotsFragment;
 import com.mathiasluo.designer.view.widget.CircleImageView;
 import com.mikepenz.iconics.IconicsDrawable;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity<MainActivity, MainActivityPresenter> implements IMainActivity {
 
-    @Bind(R.id.main_frameLayout)
-    FrameLayout mFrameLayout;
+
     @Bind(R.id.nav_view)
     NavigationView mNavigationView;
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+
+    Fragment mCurrentFragment;
+    Map<Class<Fragment>, Fragment> fragmentMap;
 
     public final static int REQUTECODE = 0001;
 
@@ -49,15 +59,10 @@ public class MainActivity extends BaseActivity<MainActivity, MainActivityPresent
         requestWindowFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        fragmentMap = new HashMap<>();
         init();
         mPresenter.loadUserInfoFromRealm();
-        setShotsFragment(new ShotsFragment());
-    }
-
-    private void setShotsFragment(ShotsFragment fragment) {
-        android.support.v4.app.FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.replace(R.id.main_frameLayout, fragment);
-        transaction.commit();
+        showFragment(ShotsFragment.class);
     }
 
 
@@ -79,6 +84,7 @@ public class MainActivity extends BaseActivity<MainActivity, MainActivityPresent
                 // mDrawerLayout.closeDrawers();
             else {
                 //如果已经登陆，就打开个人主页
+                showFragment(PersonFragment.class);
             }
         });
         mFragmentManager = getSupportFragmentManager();
@@ -93,6 +99,33 @@ public class MainActivity extends BaseActivity<MainActivity, MainActivityPresent
             mPresenter.loadUserInfoFromRealm();
         }
     }
+
+
+    public void showFragment(Class fragment) {
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+
+        if (mCurrentFragment != null) {
+            transaction.hide(mCurrentFragment);
+        }
+        if (fragmentMap.containsKey(fragment)) {
+            mCurrentFragment = fragmentMap.get(fragment);
+        } else {
+            try {
+                mCurrentFragment = (Fragment) fragment.newInstance();
+                transaction.add(R.id.main_frameLayout, mCurrentFragment);
+            } catch (InstantiationException e) {
+                ToastUtil.Toast("出现了错误哟");
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                ToastUtil.Toast("出现了错误哟");
+                e.printStackTrace();
+            }
+            fragmentMap.put(fragment, mCurrentFragment);
+        }
+        transaction.show(mCurrentFragment);
+        transaction.commit();
+    }
+
 
     @Override
     protected MainActivityPresenter creatPresenter() {
@@ -117,7 +150,7 @@ public class MainActivity extends BaseActivity<MainActivity, MainActivityPresent
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main,menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 }

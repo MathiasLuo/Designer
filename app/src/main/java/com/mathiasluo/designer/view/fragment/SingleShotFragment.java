@@ -11,7 +11,6 @@ import com.mathiasluo.designer.R;
 import com.mathiasluo.designer.bean.Shot;
 import com.mathiasluo.designer.databinding.ContentShotBinding;
 import com.mathiasluo.designer.model.ImageModelImpl;
-import com.mathiasluo.designer.utils.LogUtils;
 
 /**
  * Created by MathiasLuo on 2016/3/18.
