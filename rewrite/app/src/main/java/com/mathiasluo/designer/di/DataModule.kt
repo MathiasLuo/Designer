@@ -1,14 +1,21 @@
 package com.mathiasluo.designer.di
 
-import com.mathiasluo.designer.BuildConfig
-import com.mathiasluo.designer.data.fake.FakeShotRepository
-import com.mathiasluo.designer.data.remote.DesignerApi
-import com.mathiasluo.designer.data.remote.RemoteShotRepository
-import com.mathiasluo.designer.domain.repository.ShotRepository
+import android.content.Context
+import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.mathiasluo.designer.BuildConfig
+import com.mathiasluo.designer.data.ShotRemoteDataSource
+import com.mathiasluo.designer.data.fake.FakeShotRemoteDataSource
+import com.mathiasluo.designer.data.local.DesignerDatabase
+import com.mathiasluo.designer.data.local.ShotDao
+import com.mathiasluo.designer.data.remote.ApiShotRemoteDataSource
+import com.mathiasluo.designer.data.remote.DesignerApi
+import com.mathiasluo.designer.data.repository.CachedShotRepository
+import com.mathiasluo.designer.domain.repository.ShotRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -52,11 +59,25 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideShotRepository(
-        fake: FakeShotRepository,
-        remote: RemoteShotRepository,
-    ): ShotRepository = when (BuildConfig.DATA_SOURCE) {
-        "remote", "dribbble" -> remote
+    fun provideDatabase(@ApplicationContext context: Context): DesignerDatabase =
+        Room.databaseBuilder(context, DesignerDatabase::class.java, "designer.db")
+            .fallbackToDestructiveMigration()
+            .build()
+
+    @Provides
+    fun provideShotDao(database: DesignerDatabase): ShotDao = database.shotDao()
+
+    @Provides
+    @Singleton
+    fun provideShotRemoteDataSource(
+        fake: FakeShotRemoteDataSource,
+        api: ApiShotRemoteDataSource,
+    ): ShotRemoteDataSource = when (BuildConfig.DATA_SOURCE) {
+        "remote", "dribbble" -> api
         else -> fake
     }
+
+    @Provides
+    @Singleton
+    fun provideShotRepository(repository: CachedShotRepository): ShotRepository = repository
 }
