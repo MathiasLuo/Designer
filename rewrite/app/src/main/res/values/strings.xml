@@ -1,4 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">设计狮</string>
+    <string name="nav_search">搜索</string>
+    <string name="nav_likes">我的喜欢</string>
+    <string name="nav_share">分享</string>
+    <string name="nav_settings">设置</string>
+    <string name="nav_other">其它</string>
+    <string name="login_title">登陆</string>
+    <string name="login_hint">点击头像登录</string>
+    <string name="login_subtitle">登陆后更加精彩,你懂得...</string>
+    <string name="login_failed">你还没有成功登陆哟！！！</string>
+    <string name="login_action">登录</string>
+    <string name="login_username">用户名</string>
+    <string name="login_note">Dribbble 授权已不可用，登录信息只保存在这台设备上。</string>
+    <string name="open_drawer">打开</string>
+    <string name="close_drawer">关闭</string>
+    <string name="action_detail">详情</string>
+    <string name="action_share">分享</string>
+    <string name="action_like">喜欢</string>
+    <string name="action_unlike">取消喜欢</string>
+    <string name="action_back">返回</string>
+    <string name="action_more">更多</string>
+    <string name="likes_sentence">%1$d 人喜欢这张照片。</string>
+    <string name="detail_likes_sentence">%1$d 个人喜欢这个照片</string>
+    <string name="latest_data">已经是最新的数据了</string>
+    <string name="network_error">网络刷新出现了错误</string>
+    <string name="empty_likes">还没有喜欢的作品</string>
+    <string name="empty_search">没有匹配的作品</string>
+    <string name="settings_app">应用</string>
+    <string name="settings_version">版本</string>
+    <string name="profile">个人主页</string>
+    <string name="link_copied">已复制链接</string>
 </resources>

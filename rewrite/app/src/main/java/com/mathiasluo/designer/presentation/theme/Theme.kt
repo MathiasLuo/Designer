@@ -1,41 +1,31 @@
 package com.mathiasluo.designer.presentation.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val Ink = Color(0xFF1B1B1F)
-private val Paper = Color(0xFFF7F4EF)
-private val Accent = Color(0xFFB45309)
+val BrandBlue = Color(0xFF0027FF)
+val BrandPink = Color(0xFFFF4081)
+val LinkBlue = Color(0xFF3A8BBB)
+val IconGray = Color(0xFFA4A4A4)
+val PageBackground = Color(0xFFF3F3F3)
+val DividerColor = Color(0xFFEDEDED)
 
 private val LightColors = lightColorScheme(
-    primary = Accent,
+    primary = BrandBlue,
     onPrimary = Color.White,
-    background = Paper,
-    onBackground = Ink,
+    secondary = BrandPink,
+    background = PageBackground,
+    onBackground = Color(0xFF333333),
     surface = Color.White,
-    onSurface = Ink,
-)
-
-private val DarkColors = darkColorScheme(
-    primary = Color(0xFFFBBF24),
-    onPrimary = Ink,
-    background = Ink,
-    onBackground = Paper,
-    surface = Color(0xFF2A2A2E),
-    onSurface = Paper,
+    onSurface = Color(0xFF333333),
 )
 
 @Composable
-fun DesignerTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
-) {
+fun DesignerTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColors else LightColors,
+        colorScheme = LightColors,
         content = content,
     )
 }
