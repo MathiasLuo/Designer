@@ -15,7 +15,7 @@
 ### 路线 B：自建后端 / 聚合（推荐默认）
 
 - 前提：自有 API（或 Mock），契约与领域模型稳定，不绑死 Dribbble。
-- `data` 层实现 `RemoteShotRepository` + 可选 `FakeShotRepository`（本地开发）。
+- `data` 层：`ShotRemoteDataSource`（Fake / API）+ `CachedShotRepository`（Room 缓存 + Paging）。
 - Auth：自有账号体系，或先做游客浏览 + 后期登录。
 - 能力：同样的 Feed / 详情 / 喜欢；数据来源可换 Behance、CMS、爬取合规源等。
 - 好处：产品与技术演进不受第三方 API 生死影响。
@@ -64,8 +64,8 @@ com.mathiasluo.designer
 
 ## 落地顺序
 
-1. Compose 壳 + 主题 + Navigation  
-2. Domain 模型 + Fake Repository + Feed / Detail UI  
-3. 接 Remote（路线 B）或 Dribbble（路线 A）  
-4. Paging + Room 缓存  
+1. Compose 壳 + 主题 + Navigation ✅  
+2. Domain 模型 + Fake Repository + Feed / Detail UI ✅  
+3. 接 Remote（路线 B）或 Dribbble（路线 A）— API 骨架已就绪  
+4. Paging + Room 缓存 ✅（`CachedShotRepository`）  
 5. Auth / Like（有权限再做）  

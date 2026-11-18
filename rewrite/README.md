@@ -9,9 +9,9 @@
 ## 当前内容
 
 - Version Catalog：`gradle/libs.versions.toml`
-- Feed：Compose 列表 + `FeedViewModel` + `FakeShotRepository`
+- Feed：Compose + Paging 3 + Room 缓存（`CachedShotRepository`）
 - 详情：点击进入 `ShotDetailScreen`
-- DI：Hilt 绑定 Fake 仓库（可换成 Remote / Dribbble）
+- DI：Hilt 按 `DATA_SOURCE` 绑定 Fake / API `ShotRemoteDataSource`
 
 ## 切换数据源
 
