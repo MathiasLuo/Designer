@@ -49,6 +49,7 @@ fun ShotDetailScreen(
             )
         },
     ) { padding ->
+        val shot = state.shot
         when {
             state.isLoading -> {
                 Column(
@@ -61,8 +62,7 @@ fun ShotDetailScreen(
                     CircularProgressIndicator()
                 }
             }
-            state.shot != null -> {
-                val shot = state.shot
+            shot != null -> {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
