@@ -1,4 +1,8 @@
 
+### 现代化重写（进行中）
+
+旧工程保留在根目录。Compose 重写脚手架见 [`rewrite/`](rewrite/)，架构与两条数据源路线见 [`docs/modernization/ARCHITECTURE.md`](docs/modernization/ARCHITECTURE.md)。
+
 ###app截图###
 ![
 ![Screenshot_2016-04-01-22-19-24.png](http://upload-images.jianshu.io/upload_images/295205-f5527b4906d134ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)](http://upload-images.jianshu.io/upload_images/295205-85e8cdb009538104.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
