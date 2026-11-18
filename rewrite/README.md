@@ -8,10 +8,10 @@
 
 ## 当前内容
 
-- Version Catalog：`gradle/libs.versions.toml`
-- Feed：Compose + Paging 3 + Room 缓存（`CachedShotRepository`）
-- 详情：点击进入 `ShotDetailScreen`
-- DI：Hilt 按 `DATA_SOURCE` 绑定 Fake / API `ShotRemoteDataSource`
+- 作品流：Compose 卡片、下拉刷新、Paging 3 + Room，每页 10 条
+- 全屏详情：左右滑动相邻作品
+- 侧栏：设计狮、搜索、我的喜欢、分享、设置，以及本机登录和个人页
+- 默认数据源是 Fake（Dribbble API v1 已关闭）
 
 ## 切换数据源
 

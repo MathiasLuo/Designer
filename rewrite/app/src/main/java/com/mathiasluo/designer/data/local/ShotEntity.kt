@@ -12,9 +12,15 @@ data class ShotEntity(
     val description: String,
     val imageUrl: String,
     val likesCount: Int,
+    val commentsCount: Int,
+    val width: Int,
+    val height: Int,
+    val htmlUrl: String,
     val authorId: String,
     val authorName: String,
+    val authorUsername: String,
     val authorAvatarUrl: String,
+    val authorHtmlUrl: String,
     val sortIndex: Int,
 )
 
@@ -28,7 +34,13 @@ fun ShotEntity.toDomain(): Shot = Shot(
         id = authorId,
         name = authorName,
         avatarUrl = authorAvatarUrl,
+        username = authorUsername,
+        htmlUrl = authorHtmlUrl,
     ),
+    commentsCount = commentsCount,
+    width = width,
+    height = height,
+    htmlUrl = htmlUrl,
 )
 
 fun Shot.toEntity(sortIndex: Int): ShotEntity = ShotEntity(
@@ -37,8 +49,14 @@ fun Shot.toEntity(sortIndex: Int): ShotEntity = ShotEntity(
     description = description,
     imageUrl = imageUrl,
     likesCount = likesCount,
+    commentsCount = commentsCount,
+    width = width,
+    height = height,
+    htmlUrl = htmlUrl,
     authorId = author.id,
     authorName = author.name,
+    authorUsername = author.username,
     authorAvatarUrl = author.avatarUrl,
+    authorHtmlUrl = author.htmlUrl,
     sortIndex = sortIndex,
 )

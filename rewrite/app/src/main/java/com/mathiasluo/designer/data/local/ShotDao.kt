@@ -6,11 +6,15 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ShotDao {
     @Query("SELECT * FROM shots ORDER BY sortIndex ASC")
     fun pagingSource(): PagingSource<Int, ShotEntity>
+
+    @Query("SELECT * FROM shots ORDER BY sortIndex ASC")
+    fun observeAll(): Flow<List<ShotEntity>>
 
     @Query("SELECT * FROM shots WHERE id = :id LIMIT 1")
     suspend fun getById(id: String): ShotEntity?

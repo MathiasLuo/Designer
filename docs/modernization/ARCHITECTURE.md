@@ -68,4 +68,4 @@ com.mathiasluo.designer
 2. Domain 模型 + Fake Repository + Feed / Detail UI ✅  
 3. 接 Remote（路线 B）或 Dribbble（路线 A）— API 骨架已就绪  
 4. Paging + Room 缓存 ✅（`CachedShotRepository`）  
-5. Auth / Like（有权限再做）  
+5. 本机登录与喜欢（DataStore 保存用户名，喜欢保存在本次进程）✅  

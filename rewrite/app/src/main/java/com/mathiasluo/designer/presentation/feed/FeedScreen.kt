@@ -1,165 +1,138 @@
 package com.mathiasluo.designer.presentation.feed
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import coil.compose.AsyncImage
+import com.mathiasluo.designer.R
 import com.mathiasluo.designer.domain.model.Shot
+import com.mathiasluo.designer.presentation.common.ShotCard
+import com.mathiasluo.designer.presentation.common.toast
+import com.mathiasluo.designer.presentation.theme.BrandBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedScreen(
-    onShotClick: (String) -> Unit,
+    liked: Set<String>,
+    onOpenShot: (String) -> Unit,
+    onToggleLike: (String) -> Unit,
     viewModel: FeedViewModel = hiltViewModel(),
 ) {
-    val state by viewModel.uiState.collectAsStateWithLifecycle()
     val pagingItems = viewModel.pagingData.collectAsLazyPagingItems()
+    val context = LocalContext.current
+    var userPulled by remember { mutableStateOf(false) }
+    var previousFirstId by remember { mutableStateOf<String?>(null) }
+    val latestMessage = stringResource(R.string.latest_data)
+    val errorMessage = stringResource(R.string.network_error)
+    val refreshState = pagingItems.loadState.refresh
 
-    Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("设计狮") })
-        },
-    ) { padding ->
-        PullToRefreshBox(
-            isRefreshing = state.isRefreshing,
-            onRefresh = {
-                viewModel.onRefresh()
-                pagingItems.refresh()
-            },
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-        ) {
-            FeedList(
-                pagingItems = pagingItems,
-                errorMessage = state.errorMessage,
-                onShotClick = onShotClick,
-            )
+    LaunchedEffect(refreshState, pagingItems.itemCount) {
+        when (refreshState) {
+            is LoadState.NotLoading -> {
+                val firstId = if (pagingItems.itemCount > 0) pagingItems.peek(0)?.id else null
+                if (userPulled && firstId != null && firstId == previousFirstId) {
+                    context.toast(latestMessage)
+                }
+                if (firstId != null) previousFirstId = firstId
+                userPulled = false
+            }
+            is LoadState.Error -> {
+                context.toast(errorMessage)
+                userPulled = false
+            }
+            is LoadState.Loading -> Unit
         }
+    }
+
+    PullToRefreshBox(
+        isRefreshing = refreshState is LoadState.Loading,
+        onRefresh = {
+            userPulled = true
+            pagingItems.refresh()
+        },
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        FeedList(
+            pagingItems = pagingItems,
+            liked = liked,
+            onOpenShot = onOpenShot,
+            onToggleLike = onToggleLike,
+            errorMessage = (pagingItems.loadState.append as? LoadState.Error)?.error?.let { errorMessage },
+        )
     }
 }
 
 @Composable
 private fun FeedList(
     pagingItems: LazyPagingItems<Shot>,
+    liked: Set<String>,
+    onOpenShot: (String) -> Unit,
+    onToggleLike: (String) -> Unit,
     errorMessage: String?,
-    onShotClick: (String) -> Unit,
 ) {
     LazyColumn(
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(16.dp),
     ) {
-        if (errorMessage != null) {
+        if (pagingItems.itemCount == 0 && pagingItems.loadState.refresh is LoadState.Error) {
             item(key = "error") {
                 Text(
-                    text = errorMessage,
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodyMedium,
+                    text = stringResource(R.string.network_error),
+                    modifier = Modifier.padding(24.dp),
+                    color = BrandBlue,
                 )
             }
         }
-
         items(
             count = pagingItems.itemCount,
             key = pagingItems.itemKey { it.id },
         ) { index ->
             val shot = pagingItems[index] ?: return@items
-            ShotFeedItem(shot = shot, onClick = { onShotClick(shot.id) })
+            ShotCard(
+                shot = shot,
+                liked = shot.id in liked,
+                onOpen = { onOpenShot(shot.id) },
+                onToggleLike = { onToggleLike(shot.id) },
+            )
         }
-
-        when (val append = pagingItems.loadState.append) {
-            is LoadState.Loading -> {
-                item(key = "append-loading") {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator()
-                    }
+        if (pagingItems.loadState.append is LoadState.Loading) {
+            item(key = "append-loading") {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator(color = BrandBlue)
                 }
             }
-            is LoadState.Error -> {
-                item(key = "append-error") {
-                    Text(
-                        text = append.error.message ?: "Failed to load more",
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-            }
-            else -> Unit
         }
-    }
-}
-
-@Composable
-private fun ShotFeedItem(
-    shot: Shot,
-    onClick: () -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-    ) {
-        AsyncImage(
-            model = shot.imageUrl,
-            contentDescription = shot.title,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(4f / 3f),
-        )
-        Spacer(Modifier.height(10.dp))
-        Text(shot.title, style = MaterialTheme.typography.titleMedium)
-        Spacer(Modifier.height(6.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            AsyncImage(
-                model = shot.author.avatarUrl,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(24.dp)
-                    .clip(CircleShape),
-            )
-            Text(
-                text = "${shot.author.name} · ${shot.likesCount} likes",
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 8.dp),
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-            )
+        if (errorMessage != null) {
+            item(key = "append-error") {
+                Text(errorMessage, modifier = Modifier.padding(16.dp))
+            }
         }
     }
 }
