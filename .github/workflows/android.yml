@@ -15,10 +15,22 @@ jobs:
           distribution: temurin
           java-version: "17"
           cache: gradle
-          cache-dependency-path: rewrite/**/gradle-wrapper.properties
+          cache-dependency-path: rewrite/gradle/wrapper/gradle-wrapper.properties
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Prepare Android SDK
+        run: |
+          set -euo pipefail
+          SDKROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-/usr/local/lib/android/sdk}}"
+          echo "ANDROID_HOME=$SDKROOT" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$SDKROOT" >> "$GITHUB_ENV"
+          # Prefer cmdline-tools/latest, then any numbered install.
+          if [[ -x "$SDKROOT/cmdline-tools/latest/bin/sdkmanager" ]]; then
+            SDKMANAGER="$SDKROOT/cmdline-tools/latest/bin/sdkmanager"
+          else
+            SDKMANAGER="$(ls -d "$SDKROOT"/cmdline-tools/*/bin/sdkmanager | sort -V | tail -n1)"
+          fi
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Grant execute permission for gradlew
         working-directory: rewrite
